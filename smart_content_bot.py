@@ -42,7 +42,7 @@ DISCUSSION_QUESTIONS = [
 
 def generate_viral_content():
     """Viral potansiyeli yüksek içerik üret"""
-    
+
     # Rastgele konu seç
     topics = [
         "human memory", "sleep patterns", "decision making", "social behavior",
@@ -50,15 +50,15 @@ def generate_viral_content():
         "intuition", "habit formation", "stress response", "social influence",
         "brain plasticity", "perception", "consciousness", "empathy"
     ]
-    
+
     topic = random.choice(topics)
     title_template = random.choice(VIRAL_TITLE_TEMPLATES)
     hook_starter = random.choice(HOOK_STARTERS)
     discussion_q = random.choice(DISCUSSION_QUESTIONS)
-    
+
     prompt = f"""
     Create an engaging, viral-potential blog article about {topic}.
-    
+
     REQUIREMENTS:
     - Title: Use this template and make it compelling: "{title_template.format(topic=topic)}"
     - Hook: Start with: "{hook_starter} {topic}..."
@@ -67,42 +67,42 @@ def generate_viral_content():
     - Tone: Conversational, intriguing, shareworthy
     - Include: Statistics, examples, surprising facts
     - End with: Discussion question and shareable quote
-    
+
     Use this EXACT markdown structure:
-    
+
     ---
     title: "Your compelling title here"
     description: "A 2-sentence description that makes people want to click"
     date: "2025-06-18"
     language: "en"
-    category: "psychology" 
+    category: "psychology"
     image: "suggested_image_description_for_dalle"
     ---
-    
+
     ## 🔍 The Discovery
-    
+
     [Hook sentence with surprising fact or statistic]
-    
+
     ## 📊 What Science Shows
-    
+
     [Research findings, studies, data]
-    
+
     ## 🧠 Why This Matters
-    
+
     [Deep explanation of implications]
-    
+
     ## 💡 Real-World Impact
-    
+
     [Examples, applications, stories]
-    
+
     ## ❓ Think About It
-    
+
     {discussion_q}
-    
+
     ## 💬 Share This Insight
-    
+
     > "Create a memorable, tweetable quote related to the topic"
-    
+
     **Did this change how you think about {topic}? Share your thoughts!**
     """
 
@@ -123,11 +123,11 @@ def generate_turkish_version(english_content):
     Translate this blog article to Turkish while maintaining the viral, engaging tone.
     Keep the markdown structure and make sure Turkish sounds natural and compelling.
     Change 'language: "en"' to 'language: "tr"' in frontmatter.
-    
+
     Original English content:
     {english_content}
     """
-    
+
     response = openai.ChatCompletion.create(
         model="gpt-4",
         messages=[
@@ -136,43 +136,43 @@ def generate_turkish_version(english_content):
         max_tokens=1200,
         temperature=0.7
     )
-    
+
     return response['choices'][0]['message']['content']
 
 def save_content(content, language="en"):
     """İçeriği kaydet"""
     date = datetime.now().strftime("%Y-%m-%d")
     slug = str(uuid.uuid4())[:8]
-    
+
     if language == "en":
         filepath = f"src/content/posts/en/viral-{date}-{slug}.md"
     else:
         filepath = f"src/content/posts/tr/viral-{date}-{slug}.md"
-    
+
     os.makedirs(os.path.dirname(filepath), exist_ok=True)
-    
+
     with open(filepath, "w", encoding="utf-8") as f:
         f.write(content)
-    
+
     print(f"✅ Viral content saved: {filepath}")
     return filepath
 
 def generate_batch_content(count=3):
     """Toplu viral içerik üret"""
     print(f"🧠 Generating {count} viral articles...")
-    
+
     for i in range(count):
         print(f"📝 Generating article {i+1}/{count}...")
-        
+
         # İngilizce içerik üret
         english_content = generate_viral_content()
         en_path = save_content(english_content, "en")
-        
+
         # Türkçe çeviri üret
         print(f"🇹🇷 Translating to Turkish...")
         turkish_content = generate_turkish_version(english_content)
         tr_path = save_content(turkish_content, "tr")
-        
+
         print(f"✨ Article {i+1} completed!")
         print(f"   EN: {en_path}")
         print(f"   TR: {tr_path}")
@@ -185,12 +185,17 @@ if __name__ == "__main__":
         print("❌ OPENAI_API_KEY environment variable not set!")
         print("Set it with: $env:OPENAI_API_KEY='your-api-key-here'")
         exit(1)
-    
+
+    print(f"✅ API Key found: {api_key[:8]}...")
     openai.api_key = api_key
-    
+
     try:
+        print("🤖 Starting viral content generation...")
         generate_batch_content(3)
         print("🎉 Viral content generation complete!")
         print("🚀 Your MindPulse site now has compelling, shareable content!")
     except Exception as e:
         print(f"❌ Error: {e}")
+        import traceback
+        traceback.print_exc()
+        exit(1)
