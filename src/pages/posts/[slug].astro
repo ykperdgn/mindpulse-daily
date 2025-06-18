@@ -6,10 +6,15 @@ export async function getStaticPaths() {
   const posts = await getCollection('posts');
   const englishPosts = posts.filter(p => p.data.language === 'en');
 
-  return englishPosts.map(post => ({
-    params: { slug: post.slug.replace('en/', '') },
-    props: { post },
-  }));
+  return englishPosts.map(post => {
+    // Extract slug from post.id and remove .md extension if present
+    let slug = post.id.startsWith('en/') ? post.id.slice(3) : post.id;
+    slug = slug.replace(/\.md$/, ''); // Remove .md extension
+    return {
+      params: { slug },
+      props: { post },
+    };
+  });
 }
 
 const { post } = Astro.props;
