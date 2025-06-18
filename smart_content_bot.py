@@ -1,4 +1,3 @@
-from openai import OpenAI
 import os
 import requests
 import json
@@ -14,9 +13,7 @@ except ImportError:
     pass  # dotenv not installed, use system env vars
 
 # API Configuration
-AI_PROVIDER = os.getenv("AI_PROVIDER", "openai")  # openai, deepseek
 DEEPSEEK_API_KEY = os.getenv("DEEPSEEK_API_KEY")
-OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
 DEEPSEEK_BASE_URL = "https://api.deepseek.com/v1"
 
 # Viral başlık şablonları
@@ -56,74 +53,45 @@ DISCUSSION_QUESTIONS = [
 ]
 
 def call_ai_api(prompt, max_tokens=1200, temperature=0.8):
-    """AI API çağrısı yap - DeepSeek veya OpenAI"""
+    """DeepSeek API çağrısı yap"""
 
-    if AI_PROVIDER == "deepseek" and DEEPSEEK_API_KEY:
-        print(f"🧠 Using DeepSeek API...")
+    if not DEEPSEEK_API_KEY:
+        raise ValueError("❌ DEEPSEEK_API_KEY environment variable not set!")
 
-        headers = {
-            "Authorization": f"Bearer {DEEPSEEK_API_KEY}",
-            "Content-Type": "application/json"
-        }
+    print(f"🧠 Using DeepSeek API...")
 
-        payload = {
-            "model": "deepseek-chat",
-            "messages": [
-                {"role": "user", "content": prompt}
-            ],
-            "max_tokens": max_tokens,
-            "temperature": temperature,
-            "stream": False
-        }
+    headers = {
+        "Authorization": f"Bearer {DEEPSEEK_API_KEY}",
+        "Content-Type": "application/json"
+    }
 
-        try:
-            response = requests.post(f"{DEEPSEEK_BASE_URL}/chat/completions",
-                                   headers=headers,
-                                   json=payload,
-                                   timeout=30)
-            response.raise_for_status()
-            result = response.json()
-            return result['choices'][0]['message']['content']
-        except requests.exceptions.HTTPError as e:
-            if e.response.status_code == 402:
-                print(f"💳 DeepSeek API: Payment Required - Check your account balance")
-            else:
-                print(f"❌ DeepSeek API HTTP error: {e}")
-
-            # Fallback to OpenAI if available
-            if OPENAI_API_KEY:
-                print("🔄 Falling back to OpenAI...")
-                return call_openai_api(prompt, max_tokens, temperature)
-            raise e
-        except Exception as e:
-            print(f"❌ DeepSeek API error: {e}")
-            # Fallback to OpenAI if available
-            if OPENAI_API_KEY:
-                print("🔄 Falling back to OpenAI...")
-                return call_openai_api(prompt, max_tokens, temperature)
-            raise e
-
-    elif OPENAI_API_KEY:
-        print(f"🤖 Using OpenAI API...")
-        return call_openai_api(prompt, max_tokens, temperature)
-
-    else:
-        raise ValueError("❌ No API key found! Set DEEPSEEK_API_KEY or OPENAI_API_KEY")
-
-def call_openai_api(prompt, max_tokens=1200, temperature=0.8):
-    """OpenAI API çağrısı - Yeni v1.0+ API"""
-    client = OpenAI(api_key=OPENAI_API_KEY)
-
-    response = client.chat.completions.create(
-        model="gpt-4",
-        messages=[
+    payload = {
+        "model": "deepseek-chat",
+        "messages": [
             {"role": "user", "content": prompt}
         ],
-        max_tokens=max_tokens,
-        temperature=temperature
-    )
+        "max_tokens": max_tokens,
+        "temperature": temperature,
+        "stream": False
+    }
 
-    return response.choices[0].message.content
+    try:
+        response = requests.post(f"{DEEPSEEK_BASE_URL}/chat/completions",
+                               headers=headers,
+                               json=payload,
+                               timeout=30)
+        response.raise_for_status()
+        result = response.json()
+        return result['choices'][0]['message']['content']
+    except requests.exceptions.HTTPError as e:
+        if e.response.status_code == 402:
+            print(f"💳 DeepSeek API: Payment Required - Check your account balance")
+        else:
+            print(f"❌ DeepSeek API HTTP error: {e}")
+        raise e
+    except Exception as e:
+        print(f"❌ DeepSeek API error: {e}")
+        raise e
 
 def generate_viral_content():
     """Viral potansiyeli yüksek içerik üret"""
@@ -186,7 +154,9 @@ def generate_viral_content():
 
     ## 💬 Share This Insight
 
-    > "Create a memorable, tweetable quote related to the topic"    **Did this change how you think about {topic}? Share your thoughts!**
+    > "Create a memorable, tweetable quote related to the topic"
+
+    **Did this change how you think about {topic}? Share your thoughts!**
     """
 
     return call_ai_api(prompt, max_tokens=1200, temperature=0.8)
@@ -196,7 +166,9 @@ def generate_turkish_version(english_content):
     prompt = f"""
     Translate this blog article to Turkish while maintaining the viral, engaging tone.
     Keep the markdown structure and make sure Turkish sounds natural and compelling.
-    Change 'language: "en"' to 'language: "tr"' in frontmatter.    Original English content:
+    Change 'language: "en"' to 'language: "tr"' in frontmatter.
+
+    Original English content:
     {english_content}
     """
 
@@ -242,29 +214,16 @@ def generate_batch_content(count=3):
         print()
 
 if __name__ == "__main__":
-    print("🚀 MindPulse Daily - AI Content Generator")
-    print(f"📡 Provider: {AI_PROVIDER.upper()}")
+    print("🚀 MindPulse Daily - DeepSeek AI Content Generator")
+    print("📡 Provider: DEEPSEEK")
 
     # API key kontrolü
-    if AI_PROVIDER == "deepseek":
-        if not DEEPSEEK_API_KEY:
-            print("❌ DEEPSEEK_API_KEY environment variable not set!")
-            print("Set it with: $env:DEEPSEEK_API_KEY='your-deepseek-api-key'")
-            if OPENAI_API_KEY:
-                print("🔄 Falling back to OpenAI...")
-            else:
-                print("❌ No API keys available!")
-                exit(1)
-        else:
-            print(f"✅ DeepSeek API Key found: {DEEPSEEK_API_KEY[:8]}...")
-
-    elif AI_PROVIDER == "openai":
-        if not OPENAI_API_KEY:
-            print("❌ OPENAI_API_KEY environment variable not set!")
-            print("Set it with: $env:OPENAI_API_KEY='your-openai-api-key'")
-            exit(1)
-        else:
-            print(f"✅ OpenAI API Key found: {OPENAI_API_KEY[:8]}...")
+    if not DEEPSEEK_API_KEY:
+        print("❌ DEEPSEEK_API_KEY environment variable not set!")
+        print("Set it with: $env:DEEPSEEK_API_KEY='your-deepseek-api-key'")
+        exit(1)
+    else:
+        print(f"✅ DeepSeek API Key found: {DEEPSEEK_API_KEY[:8]}...")
 
     try:
         print("🤖 Starting viral content generation...")

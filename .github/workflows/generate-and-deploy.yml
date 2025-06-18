@@ -24,13 +24,11 @@ jobs:
           python-version: '3.11'
 
       - name: Install dependencies
-        run: pip install "openai>=1.0.0" requests python-dotenv
+        run: pip install requests python-dotenv
 
       - name: Run viral content generation
         env:
-          AI_PROVIDER: ${{ vars.AI_PROVIDER || 'openai' }}
           DEEPSEEK_API_KEY: ${{ secrets.DEEPSEEK_API_KEY }}
-          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
         run: python smart_content_bot.py
 
       - name: Commit changes
