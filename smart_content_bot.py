@@ -6,6 +6,13 @@ from datetime import datetime
 import uuid
 import random
 
+# Load environment variables from .env file
+try:
+    from dotenv import load_dotenv
+    load_dotenv()
+except ImportError:
+    pass  # dotenv not installed, use system env vars
+
 # API Configuration
 AI_PROVIDER = os.getenv("AI_PROVIDER", "openai")  # openai, deepseek
 DEEPSEEK_API_KEY = os.getenv("DEEPSEEK_API_KEY")
