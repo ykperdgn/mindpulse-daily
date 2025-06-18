@@ -2,10 +2,10 @@
 import Layout from '../layouts/Layout.astro';
 import { getCollection } from 'astro:content';
 const posts = await getCollection('posts');
-const englishPosts = posts.filter(p => p.data.language === 'en').slice(0, 5);
+const turkishPosts = posts.filter(p => p.data.language === 'tr').slice(0, 5);
 ---
 
-<Layout title="MindPulse Daily - Daily Knowledge Drops">
+<Layout title="MindPulse Daily - Günlük Bilgi Damlaları">
   <main class="container mx-auto px-4 py-8">
     <!-- Hero Section -->
     <div class="text-center mb-12">
@@ -13,36 +13,36 @@ const englishPosts = posts.filter(p => p.data.language === 'en').slice(0, 5);
         🧠 <span class="bg-gradient-to-r from-purple-600 to-blue-600 bg-clip-text text-transparent">MindPulse Daily</span>
       </h1>
       <p class="text-xl text-gray-600 mb-6">
-        Daily Knowledge Drops
+        Günlük Bilgi Damlaları
       </p>
       <p class="text-gray-500 max-w-2xl mx-auto">
-        Discover fascinating insights about science, psychology, space, history, and nature. 
-        Fresh knowledge delivered daily to expand your mind.
+        Bilim, psikoloji, uzay, tarih ve doğa hakkında büyüleyici içgörüler keşfedin.
+        Zihninizi genişletmek için her gün taze bilgiler.
       </p>
     </div>
 
     <!-- Language Toggle -->
     <div class="flex justify-center mb-8">
       <div class="bg-gray-100 rounded-lg p-1 flex">
-        <a href="/" class="px-4 py-2 bg-white rounded-md shadow-sm text-gray-900 font-medium">English</a>
-        <a href="/tr" class="px-4 py-2 text-gray-600 hover:text-gray-900">Türkçe</a>
+        <a href="/" class="px-4 py-2 text-gray-600 hover:text-gray-900">English</a>
+        <a href="/tr" class="px-4 py-2 bg-white rounded-md shadow-sm text-gray-900 font-medium">Türkçe</a>
       </div>
     </div>
 
     <!-- Latest Posts -->
     <div class="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-      {englishPosts.map(post => (
+      {turkishPosts.map(post => (
         <article class="bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow p-6 border border-gray-200">
           <h2 class="text-xl font-semibold text-gray-900 mb-2">
-            <a href={`/posts/${post.slug.replace('en/', '')}/`} class="hover:text-purple-600 transition-colors">
+            <a href={`/tr/posts/${post.slug}/`} class="hover:text-purple-600 transition-colors">
               {post.data.title}
             </a>
           </h2>
           <p class="text-gray-600 mb-4">{post.data.description}</p>
           <div class="flex justify-between items-center">
             <span class="text-sm text-gray-500">{post.data.date}</span>
-            <a href={`/posts/${post.slug.replace('en/', '')}/`} class="text-purple-600 font-medium hover:text-purple-700 transition-colors">
-              Read more →
+            <a href={`/tr/posts/${post.slug}/`} class="text-purple-600 font-medium hover:text-purple-700 transition-colors">
+              Devamını oku →
             </a>
           </div>
         </article>
@@ -51,10 +51,10 @@ const englishPosts = posts.filter(p => p.data.language === 'en').slice(0, 5);
 
     <!-- Call to Action -->
     <div class="text-center mt-12 p-8 bg-gradient-to-r from-purple-50 to-blue-50 rounded-lg">
-      <h3 class="text-2xl font-bold text-gray-900 mb-4">Never Miss a Knowledge Drop</h3>
-      <p class="text-gray-600 mb-6">Get the latest fascinating insights delivered to your inbox</p>
+      <h3 class="text-2xl font-bold text-gray-900 mb-4">Hiçbir Bilgi Damlasını Kaçırmayın</h3>
+      <p class="text-gray-600 mb-6">En son büyüleyici içgörüleri e-posta kutunuza alın</p>
       <button class="bg-purple-600 text-white px-6 py-3 rounded-lg font-medium hover:bg-purple-700 transition-colors">
-        Subscribe to Newsletter
+        Bültene Abone Ol
       </button>
     </div>
   </main>

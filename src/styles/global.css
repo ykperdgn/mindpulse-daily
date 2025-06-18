@@ -1,0 +1,31 @@
+@import "tailwindcss";
+
+/* Additional custom styles */
+.prose {
+  max-width: none;
+}
+
+.prose h1,
+.prose h2,
+.prose h3 {
+  color: #1f2937;
+}
+
+.prose p {
+  color: #4b5563;
+  line-height: 1.8;
+}
+
+.prose a {
+  color: #7c3aed;
+  text-decoration: none;
+}
+
+.prose a:hover {
+  color: #5b21b6;
+}
+
+/* Smooth transitions */
+* {
+  transition: color 0.2s ease, background-color 0.2s ease, transform 0.2s ease;
+}
