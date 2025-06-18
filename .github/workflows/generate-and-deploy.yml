@@ -24,7 +24,7 @@ jobs:
           python-version: '3.11'
 
       - name: Install dependencies
-        run: pip install "openai>=1.0.0" requests
+        run: pip install "openai>=1.0.0" requests python-dotenv
 
       - name: Run viral content generation
         env:
