@@ -1,8 +1,16 @@
 import openai
 import os
+import requests
+import json
 from datetime import datetime
 import uuid
 import random
+
+# API Configuration
+AI_PROVIDER = os.getenv("AI_PROVIDER", "deepseek")  # deepseek, openai
+DEEPSEEK_API_KEY = os.getenv("DEEPSEEK_API_KEY")
+OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
+DEEPSEEK_BASE_URL = "https://api.deepseek.com/v1"
 
 # Viral başlık şablonları
 VIRAL_TITLE_TEMPLATES = [
@@ -39,6 +47,64 @@ DISCUSSION_QUESTIONS = [
     "Does this surprise you or confirm what you suspected?",
     "How might this impact future generations?"
 ]
+
+def call_ai_api(prompt, max_tokens=1200, temperature=0.8):
+    """AI API çağrısı yap - DeepSeek veya OpenAI"""
+
+    if AI_PROVIDER == "deepseek" and DEEPSEEK_API_KEY:
+        print(f"🧠 Using DeepSeek API...")
+        headers = {
+            "Authorization": f"Bearer {DEEPSEEK_API_KEY}",
+            "Content-Type": "application/json"
+        }
+
+        payload = {
+            "model": "deepseek-chat",
+            "messages": [
+                {"role": "user", "content": prompt}
+            ],
+            "max_tokens": max_tokens,
+            "temperature": temperature,
+            "stream": False
+        }
+
+        try:
+            response = requests.post(f"{DEEPSEEK_BASE_URL}/chat/completions",
+                                   headers=headers,
+                                   json=payload,
+                                   timeout=30)
+            response.raise_for_status()
+            result = response.json()
+            return result['choices'][0]['message']['content']
+        except Exception as e:
+            print(f"❌ DeepSeek API error: {e}")
+            # Fallback to OpenAI if available
+            if OPENAI_API_KEY:
+                print("🔄 Falling back to OpenAI...")
+                return call_openai_api(prompt, max_tokens, temperature)
+            raise e
+
+    elif OPENAI_API_KEY:
+        print(f"🤖 Using OpenAI API...")
+        return call_openai_api(prompt, max_tokens, temperature)
+
+    else:
+        raise ValueError("❌ No API key found! Set DEEPSEEK_API_KEY or OPENAI_API_KEY")
+
+def call_openai_api(prompt, max_tokens=1200, temperature=0.8):
+    """OpenAI API çağrısı"""
+    openai.api_key = OPENAI_API_KEY
+
+    response = openai.ChatCompletion.create(
+        model="gpt-4",
+        messages=[
+            {"role": "user", "content": prompt}
+        ],
+        max_tokens=max_tokens,
+        temperature=temperature
+    )
+
+    return response['choices'][0]['message']['content']
 
 def generate_viral_content():
     """Viral potansiyeli yüksek içerik üret"""
@@ -101,43 +167,21 @@ def generate_viral_content():
 
     ## 💬 Share This Insight
 
-    > "Create a memorable, tweetable quote related to the topic"
-
-    **Did this change how you think about {topic}? Share your thoughts!**
+    > "Create a memorable, tweetable quote related to the topic"    **Did this change how you think about {topic}? Share your thoughts!**
     """
 
-    response = openai.ChatCompletion.create(
-        model="gpt-4",
-        messages=[
-            {"role": "user", "content": prompt}
-        ],
-        max_tokens=1200,
-        temperature=0.8
-    )
-
-    return response['choices'][0]['message']['content']
+    return call_ai_api(prompt, max_tokens=1200, temperature=0.8)
 
 def generate_turkish_version(english_content):
     """İngilizce içeriği Türkçe'ye çevir"""
     prompt = f"""
     Translate this blog article to Turkish while maintaining the viral, engaging tone.
     Keep the markdown structure and make sure Turkish sounds natural and compelling.
-    Change 'language: "en"' to 'language: "tr"' in frontmatter.
-
-    Original English content:
+    Change 'language: "en"' to 'language: "tr"' in frontmatter.    Original English content:
     {english_content}
     """
 
-    response = openai.ChatCompletion.create(
-        model="gpt-4",
-        messages=[
-            {"role": "user", "content": prompt}
-        ],
-        max_tokens=1200,
-        temperature=0.7
-    )
-
-    return response['choices'][0]['message']['content']
+    return call_ai_api(prompt, max_tokens=1200, temperature=0.7)
 
 def save_content(content, language="en"):
     """İçeriği kaydet"""
@@ -179,15 +223,29 @@ def generate_batch_content(count=3):
         print()
 
 if __name__ == "__main__":
-    # OpenAI API key kontrolü
-    api_key = os.getenv("OPENAI_API_KEY")
-    if not api_key:
-        print("❌ OPENAI_API_KEY environment variable not set!")
-        print("Set it with: $env:OPENAI_API_KEY='your-api-key-here'")
-        exit(1)
+    print("🚀 MindPulse Daily - AI Content Generator")
+    print(f"📡 Provider: {AI_PROVIDER.upper()}")
 
-    print(f"✅ API Key found: {api_key[:8]}...")
-    openai.api_key = api_key
+    # API key kontrolü
+    if AI_PROVIDER == "deepseek":
+        if not DEEPSEEK_API_KEY:
+            print("❌ DEEPSEEK_API_KEY environment variable not set!")
+            print("Set it with: $env:DEEPSEEK_API_KEY='your-deepseek-api-key'")
+            if OPENAI_API_KEY:
+                print("🔄 Falling back to OpenAI...")
+            else:
+                print("❌ No API keys available!")
+                exit(1)
+        else:
+            print(f"✅ DeepSeek API Key found: {DEEPSEEK_API_KEY[:8]}...")
+
+    elif AI_PROVIDER == "openai":
+        if not OPENAI_API_KEY:
+            print("❌ OPENAI_API_KEY environment variable not set!")
+            print("Set it with: $env:OPENAI_API_KEY='your-openai-api-key'")
+            exit(1)
+        else:
+            print(f"✅ OpenAI API Key found: {OPENAI_API_KEY[:8]}...")
 
     try:
         print("🤖 Starting viral content generation...")
