@@ -5,7 +5,7 @@ import tailwindcss from '@tailwindcss/vite';
 
 // https://astro.build/config
 export default defineConfig({
-  site: 'https://mindpulsedaily.com', // Production domain
+  site: 'https://mindpulse-daily.vercel.app', // Vercel deployment URL
   vite: {
     plugins: [tailwindcss()]
   }
