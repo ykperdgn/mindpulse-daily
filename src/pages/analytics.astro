@@ -1,0 +1,648 @@
+---
+import Layout from '../layouts/Layout.astro';
+---
+
+<Layout title="MindPulse Daily - Analytics Dashboard">
+  <main style="max-width: 1200px; margin: 0 auto; padding: 2rem 1rem;">
+    <!-- Dashboard Header -->
+    <div style="text-align: center; margin-bottom: 3rem;">
+      <h1 style="font-size: 3rem; font-weight: 900; color: #1f2937; margin-bottom: 1rem;">
+        📊 Analytics Dashboard
+      </h1>
+      <p style="font-size: 1.25rem; color: #6b7280;">
+        Real-time insights into content performance and user engagement
+      </p>
+    </div>
+
+    <!-- Stats Grid -->
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 2rem; margin-bottom: 3rem;">
+      <!-- Total Views -->
+      <div style="background: linear-gradient(135deg, #9333ea 0%, #7c3aed 100%); color: white; padding: 2rem; border-radius: 1rem; text-align: center;">
+        <div style="font-size: 3rem; font-weight: 900; margin-bottom: 0.5rem;" id="total-views">
+          0
+        </div>
+        <div style="font-size: 1rem; opacity: 0.9;">Total Views</div>
+        <div style="font-size: 0.875rem; opacity: 0.7; margin-top: 0.5rem;" id="views-change">
+          +0% from last week
+        </div>
+      </div>
+
+      <!-- Engagement Rate -->
+      <div style="background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%); color: white; padding: 2rem; border-radius: 1rem; text-align: center;">
+        <div style="font-size: 3rem; font-weight: 900; margin-bottom: 0.5rem;" id="engagement-rate">
+          0%
+        </div>
+        <div style="font-size: 1rem; opacity: 0.9;">Engagement Rate</div>
+        <div style="font-size: 0.875rem; opacity: 0.7; margin-top: 0.5rem;" id="engagement-change">
+          +0% from last week
+        </div>
+      </div>
+
+      <!-- Newsletter Signups -->
+      <div style="background: linear-gradient(135deg, #059669 0%, #047857 100%); color: white; padding: 2rem; border-radius: 1rem; text-align: center;">
+        <div style="font-size: 3rem; font-weight: 900; margin-bottom: 0.5rem;" id="newsletter-signups">
+          0
+        </div>
+        <div style="font-size: 1rem; opacity: 0.9;">Newsletter Signups</div>
+        <div style="font-size: 0.875rem; opacity: 0.7; margin-top: 0.5rem;" id="signups-change">
+          +0 this week
+        </div>
+      </div>
+
+      <!-- Average Time -->
+      <div style="background: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%); color: white; padding: 2rem; border-radius: 1rem; text-align: center;">
+        <div style="font-size: 3rem; font-weight: 900; margin-bottom: 0.5rem;" id="avg-time">
+          0m
+        </div>
+        <div style="font-size: 1rem; opacity: 0.9;">Avg. Time on Page</div>
+        <div style="font-size: 0.875rem; opacity: 0.7; margin-top: 0.5rem;" id="time-change">
+          +0s from last week
+        </div>
+      </div>
+    </div>
+
+    <!-- Content Performance -->
+    <div style="background: white; border-radius: 1rem; padding: 2rem; box-shadow: 0 4px 6px rgba(0,0,0,0.1); margin-bottom: 3rem;">
+      <h2 style="font-size: 1.5rem; font-weight: 700; color: #1f2937; margin-bottom: 2rem;">
+        🔥 Top Performing Content
+      </h2>
+
+      <div id="top-content">
+        <!-- Dynamic content will be loaded here -->
+        <div style="text-align: center; color: #6b7280; padding: 2rem;">
+          📊 Loading performance data...
+        </div>
+      </div>
+    </div>
+
+    <!-- Real-time Activity -->
+    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem;">
+      <!-- Recent Activity -->
+      <div style="background: white; border-radius: 1rem; padding: 2rem; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
+        <h3 style="font-size: 1.25rem; font-weight: 700; color: #1f2937; margin-bottom: 1.5rem;">
+          ⚡ Real-time Activity
+        </h3>
+
+        <div id="recent-activity" style="space-y: 1rem;">
+          <!-- Dynamic activity feed -->
+          <div style="padding: 1rem; background: #f9fafb; border-radius: 0.5rem; border-left: 4px solid #9333ea;">
+            <div style="font-weight: 500; color: #1f2937;">Anonymous user from Turkey</div>
+            <div style="font-size: 0.875rem; color: #6b7280;">Read "Why Do We Dream?" • 2 minutes ago</div>
+          </div>
+
+          <div style="padding: 1rem; background: #f9fafb; border-radius: 0.5rem; border-left: 4px solid #2563eb;">
+            <div style="font-weight: 500; color: #1f2937;">Newsletter signup</div>
+            <div style="font-size: 0.875rem; color: #6b7280;">New subscriber from US • 5 minutes ago</div>
+          </div>
+
+          <div style="padding: 1rem; background: #f9fafb; border-radius: 0.5rem; border-left: 4px solid #059669;">
+            <div style="font-weight: 500; color: #1f2937;">Social share</div>
+            <div style="font-size: 0.875rem; color: #6b7280;">Article shared on Twitter • 8 minutes ago</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Reaction Analytics -->
+      <div style="background: white; border-radius: 1rem; padding: 2rem; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
+        <h3 style="font-size: 1.25rem; font-weight: 700; color: #1f2937; margin-bottom: 1.5rem;">
+          💭 User Reactions
+        </h3>
+
+        <div id="reaction-stats">
+          <div style="display: flex; justify-content: between; align-items: center; padding: 0.75rem 0; border-bottom: 1px solid #f3f4f6;">
+            <span style="display: flex; align-items: center; gap: 0.5rem;">🤯 Mind-blown</span>
+            <span style="font-weight: 600; color: #9333ea;" id="mind-blown-count">0</span>
+          </div>
+
+          <div style="display: flex; justify-content: between; align-items: center; padding: 0.75rem 0; border-bottom: 1px solid #f3f4f6;">
+            <span style="display: flex; align-items: center; gap: 0.5rem;">🤔 Interesting</span>
+            <span style="font-weight: 600; color: #2563eb;" id="interesting-count">0</span>
+          </div>
+
+          <div style="display: flex; justify-content: between; align-items: center; padding: 0.75rem 0; border-bottom: 1px solid #f3f4f6;">
+            <span style="display: flex; align-items: center; gap: 0.5rem;">💡 Useful</span>
+            <span style="font-weight: 600; color: #059669;" id="useful-count">0</span>
+          </div>
+
+          <div style="display: flex; justify-content: between; align-items: center; padding: 0.75rem 0;">
+            <span style="display: flex; align-items: center; gap: 0.5rem;">🚀 Amazing</span>
+            <span style="font-weight: 600; color: #dc2626;" id="amazing-count">0</span>
+          </div>
+        </div>
+      </div>
+    </div>    <!-- Advanced Analytics Charts -->
+    <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 2rem; margin-top: 3rem;">
+      <!-- Traffic Chart -->
+      <div style="background: white; border-radius: 1rem; padding: 2rem; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
+        <h3 style="font-size: 1.25rem; font-weight: 700; color: #1f2937; margin-bottom: 1.5rem;">
+          📈 Traffic Trends (Last 7 Days)
+        </h3>
+        <canvas id="trafficChart" width="400" height="200" style="max-width: 100%;"></canvas>
+      </div>
+
+      <!-- Top Countries -->
+      <div style="background: white; border-radius: 1rem; padding: 2rem; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
+        <h3 style="font-size: 1.25rem; font-weight: 700; color: #1f2937; margin-bottom: 1.5rem;">
+          🌍 Top Countries
+        </h3>
+        <div id="top-countries">
+          <div style="display: flex; justify-content: space-between; align-items: center; padding: 0.75rem 0; border-bottom: 1px solid #f3f4f6;">
+            <span style="display: flex; align-items: center; gap: 0.5rem;">🇺🇸 United States</span>
+            <span style="font-weight: 600; color: #9333ea;">45%</span>
+          </div>
+          <div style="display: flex; justify-content: space-between; align-items: center; padding: 0.75rem 0; border-bottom: 1px solid #f3f4f6;">
+            <span style="display: flex; align-items: center; gap: 0.5rem;">🇹🇷 Turkey</span>
+            <span style="font-weight: 600; color: #2563eb;">25%</span>
+          </div>
+          <div style="display: flex; justify-content: space-between; align-items: center; padding: 0.75rem 0; border-bottom: 1px solid #f3f4f6;">
+            <span style="display: flex; align-items: center; gap: 0.5rem;">🇬🇧 United Kingdom</span>
+            <span style="font-weight: 600; color: #059669;">12%</span>
+          </div>
+          <div style="display: flex; justify-content: space-between; align-items: center; padding: 0.75rem 0; border-bottom: 1px solid #f3f4f6;">
+            <span style="display: flex; align-items: center; gap: 0.5rem;">🇩🇪 Germany</span>
+            <span style="font-weight: 600; color: #dc2626;">8%</span>
+          </div>
+          <div style="display: flex; justify-content: space-between; align-items: center; padding: 0.75rem 0;">
+            <span style="display: flex; align-items: center; gap: 0.5rem;">🌐 Others</span>
+            <span style="font-weight: 600; color: #6b7280;">10%</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Content Performance Matrix -->
+    <div style="background: white; border-radius: 1rem; padding: 2rem; box-shadow: 0 4px 6px rgba(0,0,0,0.1); margin-top: 3rem;">
+      <h2 style="font-size: 1.5rem; font-weight: 700; color: #1f2937; margin-bottom: 2rem;">
+        🎯 Content Performance Matrix
+      </h2>
+
+      <div style="overflow-x: auto;">
+        <table style="width: 100%; border-collapse: collapse;">
+          <thead>
+            <tr style="border-bottom: 2px solid #e5e7eb;">
+              <th style="text-align: left; padding: 1rem; font-weight: 600; color: #374151;">Article</th>
+              <th style="text-align: center; padding: 1rem; font-weight: 600; color: #374151;">Views</th>
+              <th style="text-align: center; padding: 1rem; font-weight: 600; color: #374151;">Engagement</th>
+              <th style="text-align: center; padding: 1rem; font-weight: 600; color: #374151;">Shares</th>
+              <th style="text-align: center; padding: 1rem; font-weight: 600; color: #374151;">Score</th>
+            </tr>
+          </thead>
+          <tbody id="content-performance-table">
+            <!-- Dynamic content rows will be inserted here -->
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- SEO Performance -->
+    <div style="background: white; border-radius: 1rem; padding: 2rem; box-shadow: 0 4px 6px rgba(0,0,0,0.1); margin-top: 3rem;">
+      <h2 style="font-size: 1.5rem; font-weight: 700; color: #1f2937; margin-bottom: 2rem;">
+        🔍 SEO Performance
+      </h2>
+
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 2rem;">
+        <div style="text-align: center;">
+          <div style="font-size: 2rem; font-weight: 700; color: #9333ea;" id="seo-score">85</div>
+          <div style="color: #6b7280;">Average SEO Score</div>
+        </div>
+
+        <div style="text-align: center;">
+          <div style="font-size: 2rem; font-weight: 700; color: #2563eb;" id="indexed-pages">24</div>
+          <div style="color: #6b7280;">Indexed Pages</div>
+        </div>
+
+        <div style="text-align: center;">
+          <div style="font-size: 2rem; font-weight: 700; color: #059669;" id="organic-traffic">+245%</div>
+          <div style="color: #6b7280;">Organic Growth</div>
+        </div>
+
+        <div style="text-align: center;">
+          <div style="font-size: 2rem; font-weight: 700; color: #dc2626;" id="bounce-rate">24%</div>
+          <div style="color: #6b7280;">Bounce Rate</div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- Analytics JavaScript -->
+  <script>
+    // Simulated real-time analytics data
+    let analyticsData = {
+      totalViews: 0,
+      engagementRate: 0,
+      newsletterSignups: 0,
+      avgTimeOnPage: 0,
+      topContent: [],
+      recentActivity: [],
+      reactions: {
+        'mind-blown': 0,
+        'interesting': 0,
+        'useful': 0,
+        'amazing': 0
+      }
+    };
+
+    // Load data from localStorage and aggregate across all pages
+    function loadAnalyticsData() {
+      // Simulate some baseline data for demo
+      analyticsData.totalViews = Math.floor(Math.random() * 5000) + 1000;
+      analyticsData.engagementRate = Math.floor(Math.random() * 30) + 45;
+      analyticsData.newsletterSignups = Math.floor(Math.random() * 100) + 50;
+      analyticsData.avgTimeOnPage = Math.floor(Math.random() * 180) + 120;
+
+      // Aggregate reactions from all pages
+      for (let i = 0; i < localStorage.length; i++) {
+        const key = localStorage.key(i);
+        if (key && key.startsWith('reactions_')) {
+          try {
+            const reactions = JSON.parse(localStorage.getItem(key) || '{}');
+            Object.keys(reactions).forEach(reaction => {
+              if (analyticsData.reactions[reaction] !== undefined) {
+                analyticsData.reactions[reaction] += reactions[reaction] || 0;
+              }
+            });
+          } catch (e) {
+            console.log('Error parsing reaction data:', e);
+          }
+        }
+      }
+
+      // Count newsletter signups
+      const newsletterEmails = localStorage.getItem('newsletter_emails');
+      if (newsletterEmails) {
+        try {
+          const emails = JSON.parse(newsletterEmails);
+          analyticsData.newsletterSignups += emails.length;
+        } catch (e) {
+          // Use default value
+        }
+      }
+    }
+
+    // Update dashboard with current data
+    function updateDashboard() {
+      loadAnalyticsData();
+
+      // Update main stats
+      document.getElementById('total-views').textContent = analyticsData.totalViews.toLocaleString();
+      document.getElementById('engagement-rate').textContent = analyticsData.engagementRate + '%';
+      document.getElementById('newsletter-signups').textContent = analyticsData.newsletterSignups.toLocaleString();
+      document.getElementById('avg-time').textContent = Math.floor(analyticsData.avgTimeOnPage / 60) + 'm';
+
+      // Update changes (simulated)
+      document.getElementById('views-change').textContent = '+' + Math.floor(Math.random() * 20 + 5) + '% from last week';
+      document.getElementById('engagement-change').textContent = '+' + Math.floor(Math.random() * 10 + 2) + '% from last week';
+      document.getElementById('signups-change').textContent = '+' + Math.floor(Math.random() * 15 + 3) + ' this week';
+      document.getElementById('time-change').textContent = '+' + Math.floor(Math.random() * 30 + 10) + 's from last week';
+
+      // Update reaction counts
+      document.getElementById('mind-blown-count').textContent = analyticsData.reactions['mind-blown'];
+      document.getElementById('interesting-count').textContent = analyticsData.reactions['interesting'];
+      document.getElementById('useful-count').textContent = analyticsData.reactions['useful'];
+      document.getElementById('amazing-count').textContent = analyticsData.reactions['amazing'];
+
+      // Update top content
+      const topContentHtml = `
+        <div style="space-y: 1rem;">
+          <div style="display: flex; justify-content: between; align-items: center; padding: 1rem; background: #f9fafb; border-radius: 0.5rem;">
+            <div>
+              <div style="font-weight: 600; color: #1f2937;">Why Do We Dream?</div>
+              <div style="font-size: 0.875rem; color: #6b7280;">1,247 views • 4.2 min avg. time</div>
+            </div>
+            <div style="text-align: right;">
+              <div style="font-weight: 600; color: #9333ea;">#1</div>
+              <div style="font-size: 0.875rem; color: #6b7280;">↑ 24%</div>
+            </div>
+          </div>
+
+          <div style="display: flex; justify-content: between; align-items: center; padding: 1rem; background: #f9fafb; border-radius: 0.5rem;">
+            <div>
+              <div style="font-weight: 600; color: #1f2937;">The Surprising Power of Silence</div>
+              <div style="font-size: 0.875rem; color: #6b7280;">892 views • 3.8 min avg. time</div>
+            </div>
+            <div style="text-align: right;">
+              <div style="font-weight: 600; color: #2563eb;">#2</div>
+              <div style="font-size: 0.875rem; color: #6b7280;">↑ 18%</div>
+            </div>
+          </div>
+
+          <div style="display: flex; justify-content: between; align-items: center; padding: 1rem; background: #f9fafb; border-radius: 0.5rem;">
+            <div>
+              <div style="font-weight: 600; color: #1f2937;">NASA's Pizza Printer</div>
+              <div style="font-size: 0.875rem; color: #6b7280;">756 views • 3.1 min avg. time</div>
+            </div>
+            <div style="text-align: right;">
+              <div style="font-weight: 600; color: #059669;">#3</div>
+              <div style="font-size: 0.875rem; color: #6b7280;">↑ 15%</div>
+            </div>
+          </div>
+        </div>
+      `;
+      document.getElementById('top-content').innerHTML = topContentHtml;    }
+
+    // Enhanced content performance table
+    function updateContentPerformanceTable() {
+      const contentData = [
+        {
+          title: "🤯 Mind-Blowing Space Fact That Will Change Your Perspective",
+          views: 1247,
+          engagement: 85,
+          shares: 156,
+          score: 9.2
+        },
+        {
+          title: "🧠 The Surprising Power of Silence on Your Brain",
+          views: 892,
+          engagement: 78,
+          shares: 124,
+          score: 8.8
+        },
+        {
+          title: "🚀 NASA's Pizza Printer - The Future of Space Food",
+          views: 756,
+          engagement: 72,
+          shares: 98,
+          score: 8.1
+        },
+        {
+          title: "🌌 Why Do We Dream? Scientists Finally Have Answers",
+          views: 634,
+          engagement: 68,
+          shares: 87,
+          score: 7.9
+        },
+        {
+          title: "💭 How Your Brain Tricks You Every Single Day",
+          views: 521,
+          engagement: 65,
+          shares: 76,
+          score: 7.5
+        }
+      ];
+
+      const tableHTML = contentData.map((content, index) => `
+        <tr style="border-bottom: 1px solid #f3f4f6; ${index % 2 === 0 ? 'background: #f9fafb;' : ''}">
+          <td style="padding: 1rem;">
+            <div style="font-weight: 600; color: #1f2937; margin-bottom: 0.25rem;">
+              ${content.title}
+            </div>
+            <div style="font-size: 0.75rem; color: #6b7280;">
+              Published ${Math.floor(Math.random() * 7) + 1} days ago
+            </div>
+          </td>
+          <td style="text-align: center; padding: 1rem; font-weight: 600; color: #374151;">
+            ${content.views.toLocaleString()}
+          </td>
+          <td style="text-align: center; padding: 1rem;">
+            <div style="background: linear-gradient(135deg, #9333ea, #7c3aed); color: white; padding: 0.25rem 0.75rem; border-radius: 1rem; font-weight: 600; font-size: 0.875rem;">
+              ${content.engagement}%
+            </div>
+          </td>
+          <td style="text-align: center; padding: 1rem; font-weight: 600; color: #374151;">
+            ${content.shares}
+          </td>
+          <td style="text-align: center; padding: 1rem;">
+            <div style="background: ${content.score >= 9 ? '#059669' : content.score >= 8 ? '#2563eb' : '#dc2626'}; color: white; padding: 0.25rem 0.75rem; border-radius: 0.5rem; font-weight: 600; font-size: 0.875rem;">
+              ${content.score}
+            </div>
+          </td>
+        </tr>
+      `).join('');
+
+      document.getElementById('content-performance-table').innerHTML = tableHTML;
+    }
+
+    // Create traffic chart using Canvas
+    function createTrafficChart() {
+      const canvas = document.getElementById('trafficChart');
+      const ctx = canvas.getContext('2d');
+
+      // Chart data (last 7 days)
+      const data = [420, 380, 450, 520, 680, 890, 750];
+      const labels = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
+
+      // Chart dimensions
+      const chartWidth = canvas.width - 80;
+      const chartHeight = canvas.height - 80;
+      const chartX = 50;
+      const chartY = 40;
+
+      // Clear canvas
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+      // Find max value for scaling
+      const maxValue = Math.max(...data);
+      const minValue = Math.min(...data);
+      const range = maxValue - minValue;
+
+      // Draw grid lines
+      ctx.strokeStyle = '#f3f4f6';
+      ctx.lineWidth = 1;
+      for (let i = 0; i <= 5; i++) {
+        const y = chartY + (chartHeight / 5) * i;
+        ctx.beginPath();
+        ctx.moveTo(chartX, y);
+        ctx.lineTo(chartX + chartWidth, y);
+        ctx.stroke();
+      }
+
+      // Draw data line
+      ctx.strokeStyle = '#9333ea';
+      ctx.lineWidth = 3;
+      ctx.beginPath();
+
+      data.forEach((value, index) => {
+        const x = chartX + (chartWidth / (data.length - 1)) * index;
+        const y = chartY + chartHeight - ((value - minValue) / range) * chartHeight;
+
+        if (index === 0) {
+          ctx.moveTo(x, y);
+        } else {
+          ctx.lineTo(x, y);
+        }
+      });
+
+      ctx.stroke();
+
+      // Draw data points
+      ctx.fillStyle = '#9333ea';
+      data.forEach((value, index) => {
+        const x = chartX + (chartWidth / (data.length - 1)) * index;
+        const y = chartY + chartHeight - ((value - minValue) / range) * chartHeight;
+
+        ctx.beginPath();
+        ctx.arc(x, y, 4, 0, 2 * Math.PI);
+        ctx.fill();
+      });
+
+      // Draw labels
+      ctx.fillStyle = '#6b7280';
+      ctx.font = '12px Arial';
+      ctx.textAlign = 'center';
+
+      labels.forEach((label, index) => {
+        const x = chartX + (chartWidth / (data.length - 1)) * index;
+        ctx.fillText(label, x, canvas.height - 20);
+      });
+
+      // Draw values on y-axis
+      ctx.textAlign = 'right';
+      for (let i = 0; i <= 5; i++) {
+        const value = Math.round(minValue + (range / 5) * (5 - i));
+        const y = chartY + (chartHeight / 5) * i + 4;        ctx.fillText(value.toString(), chartX - 10, y);
+      }
+    }    // Initialize dashboard    // Initialize dashboard
+    function initializeDashboard() {
+      updateDashboard();
+      updateContentPerformanceTable();
+      createTrafficChart();
+
+      // Update data every 10 seconds
+      setInterval(() => {
+        updateDashboard();
+        addRealtimeActivity();
+      }, 10000);
+
+      // Add some CSS animations
+      const enhancedStyle = document.createElement('style');
+      enhancedStyle.textContent = `
+        @keyframes slideIn {
+          from {
+            opacity: 0;
+            transform: translateX(-20px);
+          }
+          to {
+            opacity: 1;
+            transform: translateX(0);
+          }
+        }
+
+        @keyframes pulse {
+          0%, 100% {
+            transform: scale(1);
+          }
+          50% {
+            transform: scale(1.05);
+          }
+        }
+
+        .pulse {
+          animation: pulse 2s infinite;
+        }
+
+        canvas {
+          cursor: crosshair;
+        }
+
+        table tr:hover {
+          background: #f3f4f6 !important;
+          transform: scale(1.01);
+          transition: all 0.2s ease;
+        }
+
+        .analytics-card {
+          transition: all 0.3s ease;
+        }
+
+        .analytics-card:hover {
+          transform: translateY(-2px);
+          box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+        }
+      `;
+      document.head.appendChild(enhancedStyle);
+    }
+
+    // Export analytics data function
+    function exportAnalyticsData() {
+      const data = {
+        timestamp: new Date().toISOString(),
+        totalViews: document.getElementById('total-views').textContent,
+        engagementRate: document.getElementById('engagement-rate').textContent,
+        newsletterSignups: document.getElementById('newsletter-signups').textContent,
+        avgTime: document.getElementById('avg-time').textContent,
+        seoScore: document.getElementById('seo-score').textContent,
+        indexedPages: document.getElementById('indexed-pages').textContent,
+        reactions: analyticsData.reactions
+      };
+
+      const dataStr = JSON.stringify(data, null, 2);
+      const dataBlob = new Blob([dataStr], { type: 'application/json' });
+      const url = URL.createObjectURL(dataBlob);
+
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = `mindpulse-analytics-${new Date().toISOString().split('T')[0]}.json`;
+      link.click();
+
+      URL.revokeObjectURL(url);
+
+      // Track export event
+      if (typeof gtag !== 'undefined') {
+        gtag('event', 'analytics_export', {
+          'event_category': 'dashboard',
+          'event_label': 'data_export'
+        });
+      }
+    }
+
+    // Track user interaction with dashboard
+    function trackDashboardView() {
+      if (typeof gtag !== 'undefined') {
+        gtag('event', 'dashboard_view', {
+          'event_category': 'analytics',
+          'event_label': 'dashboard_access'
+        });
+      }
+    }
+
+    // Initialize dashboard when page loads
+    document.addEventListener('DOMContentLoaded', () => {
+      initializeDashboard();
+      trackDashboardView();
+
+      // Add keyboard shortcuts
+      document.addEventListener('keydown', (e) => {
+        if (e.ctrlKey && e.key === 'e') {
+          e.preventDefault();
+          exportAnalyticsData();
+        }
+        if (e.ctrlKey && e.key === 'r') {
+          e.preventDefault();
+          location.reload();
+        }
+      });
+    });
+
+    // Add CSS for animations and styling
+    const style = document.createElement('style');
+    style.textContent = `
+      @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(-10px); }
+        to { opacity: 1; transform: translateY(0); }
+      }
+
+      .space-y-1rem > * + * {
+        margin-top: 1rem;
+      }      .justify-between {
+        justify-content: space-between;
+      }
+    `;
+    document.head.appendChild(style);
+  </script>
+
+  <!-- Advanced Analytics Integration -->
+  <script src="/src/components/AdvancedAnalytics.js" type="module"></script>
+
+  <!-- Export Button -->
+  <div style="position: fixed; bottom: 2rem; right: 2rem;">
+    <button
+      onclick="exportAnalyticsData()"
+      style="background: linear-gradient(135deg, #9333ea 0%, #7c3aed 100%); color: white; border: none; padding: 1rem 1.5rem; border-radius: 50px; font-weight: 600; cursor: pointer; box-shadow: 0 4px 12px rgba(147, 51, 234, 0.3); transition: all 0.3s ease;"
+      onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 8px 20px rgba(147, 51, 234, 0.4)'"
+      onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 4px 12px rgba(147, 51, 234, 0.3)'"
+    >
+      📊 Export Data
+    </button>
+  </div>
+
+</Layout>

@@ -1,0 +1,22 @@
+User-agent: *
+Allow: /
+
+# Sitemaps
+Sitemap: https://mindpulse-daily.vercel.app/sitemap.xml
+
+# Crawl-delay for respectful crawling
+Crawl-delay: 1
+
+# Allow all content for search engines
+Allow: /posts/
+Allow: /tr/
+Allow: /tr/posts/
+Allow: /analytics
+
+# Disallow admin or private areas
+Disallow: /admin/
+Disallow: /_astro/
+Disallow: /api/
+
+# Cache policy
+Cache-delay: 86400

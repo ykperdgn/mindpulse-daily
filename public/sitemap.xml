@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:news="http://www.google.com/schemas/sitemap-news/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">
+  <!-- Homepage -->
+  <url>
+    <loc>https://mindpulse-daily.vercel.app</loc>
+    <changefreq>daily</changefreq>
+    <priority>1.0</priority>
+    <lastmod>2025-06-18</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://mindpulse-daily.vercel.app" />
+    <xhtml:link rel="alternate" hreflang="tr" href="https://mindpulse-daily.vercel.app/tr" />
+  </url>
+
+  <!-- Turkish Homepage -->
+  <url>
+    <loc>https://mindpulse-daily.vercel.app/tr</loc>
+    <changefreq>daily</changefreq>
+    <priority>1.0</priority>
+    <lastmod>2025-06-18</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://mindpulse-daily.vercel.app" />
+    <xhtml:link rel="alternate" hreflang="tr" href="https://mindpulse-daily.vercel.app/tr" />
+  </url>
+
+  <!-- Analytics Dashboard -->
+  <url>
+    <loc>https://mindpulse-daily.vercel.app/analytics</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+    <lastmod>2025-06-18</lastmod>
+  </url>
+
+  <!-- English Posts -->
+  <url>
+    <loc>https://mindpulse-daily.vercel.app/posts/why-do-we-dream</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+    <lastmod>2025-06-18</lastmod>
+  </url>
+
+  <url>
+    <loc>https://mindpulse-daily.vercel.app/posts/the-surprising-power-of-silence</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+    <lastmod>2025-06-18</lastmod>
+  </url>
+
+  <url>
+    <loc>https://mindpulse-daily.vercel.app/posts/nasa-pizza-printer</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+    <lastmod>2025-06-18</lastmod>
+  </url>
+
+  <url>
+    <loc>https://mindpulse-daily.vercel.app/posts/why-do-we-forget-things</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+    <lastmod>2025-06-18</lastmod>
+  </url>
+
+  <!-- Turkish Posts -->
+  <url>
+    <loc>https://mindpulse-daily.vercel.app/tr/posts/neden-ruya-goruruz</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+    <lastmod>2025-06-18</lastmod>
+  </url>
+
+  <url>
+    <loc>https://mindpulse-daily.vercel.app/tr/posts/sessizligin-sasirtici-gucu</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+    <lastmod>2025-06-18</lastmod>
+  </url>
+
+  <url>
+    <loc>https://mindpulse-daily.vercel.app/tr/posts/nasanin-pizza-yazicisi</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+    <lastmod>2025-06-18</lastmod>
+  </url>
+
+  <url>
+    <loc>https://mindpulse-daily.vercel.app/tr/posts/neden-unuturuz</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+    <lastmod>2025-06-18</lastmod>
+  </url>
+
+  <!-- Recent Viral Content -->
+  <url>
+    <loc>https://mindpulse-daily.vercel.app/posts/viral-sleep-2025-06-18</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+    <lastmod>2025-06-18</lastmod>
+    <news:news>
+      <news:publication>
+        <news:name>MindPulse Daily</news:name>
+        <news:language>en</news:language>
+      </news:publication>
+      <news:publication_date>2025-06-18</news:publication_date>
+      <news:title>The Hidden Science Behind Sleep That Will Change Your Life</news:title>
+    </news:news>
+  </url>
+</urlset>

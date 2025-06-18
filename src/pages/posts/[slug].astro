@@ -1,6 +1,7 @@
 ---
 import { getCollection } from 'astro:content';
 import Layout from '../../layouts/Layout.astro';
+import ContentRecommendations from '../../components/ContentRecommendations.astro';
 
 export async function getStaticPaths() {
   const posts = await getCollection('posts');
@@ -19,9 +20,42 @@ export async function getStaticPaths() {
 
 const { post } = Astro.props;
 const { Content } = await post.render();
+
+// Get all posts for recommendations
+const allPosts = await getCollection('posts');
+const englishPosts = allPosts.filter(p => p.data.language === 'en');
 ---
 
-<Layout title={post.data.title}>
+<Layout title={post.data.title}>  <!-- Article Schema.org Structured Data -->
+  <script type="application/ld+json" set:html={JSON.stringify({
+    "@context": "https://schema.org",
+    "@type": "Article",
+    "headline": post.data.title,
+    "description": post.data.description,
+    "author": {
+      "@type": "Organization",
+      "name": "MindPulse Daily"
+    },
+    "publisher": {
+      "@type": "Organization",
+      "name": "MindPulse Daily",
+      "logo": {
+        "@type": "ImageObject",
+        "url": "https://mindpulse-daily.vercel.app/favicon.svg"
+      }
+    },
+    "datePublished": post.data.date,
+    "dateModified": post.data.date,
+    "mainEntityOfPage": {
+      "@type": "WebPage",
+      "@id": `https://mindpulse-daily.vercel.app/posts/${post.id.replace('en/', '').replace('.md', '')}`
+    }
+  })}>
+  </script>
+
+  <!-- Reading Progress Bar -->
+  <div id="reading-progress" style="position: fixed; top: 0; left: 0; width: 0%; height: 4px; background: linear-gradient(to right, #9333ea, #2563eb); z-index: 1000; transition: width 0.3s ease;"></div>
+
   <main class="container mx-auto px-4 py-8 max-w-4xl">
     <!-- Back Navigation -->
     <nav class="mb-8">
@@ -45,6 +79,23 @@ const { Content } = await post.render();
         )}
         <h1 class="text-4xl md:text-5xl font-bold text-gray-900 mb-6 leading-tight">{post.data.title}</h1>
         <p class="text-xl text-gray-600 mb-6 leading-relaxed max-w-3xl mx-auto">{post.data.description}</p>
+
+        <!-- Social Sharing Buttons -->
+        <div class="flex justify-center gap-3 mb-6 flex-wrap">
+          <button onclick="shareOnTwitter()" class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg font-medium transition-colors flex items-center gap-2">
+            🐦 Tweet
+          </button>
+          <button onclick="shareOnFacebook()" class="bg-blue-700 hover:bg-blue-800 text-white px-4 py-2 rounded-lg font-medium transition-colors flex items-center gap-2">
+            📘 Share
+          </button>
+          <button onclick="shareOnLinkedIn()" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg font-medium transition-colors flex items-center gap-2">
+            💼 LinkedIn
+          </button>
+          <button onclick="copyLink()" class="bg-gray-600 hover:bg-gray-700 text-white px-4 py-2 rounded-lg font-medium transition-colors flex items-center gap-2">
+            🔗 Copy
+          </button>
+        </div>
+
         <div class="flex justify-center items-center space-x-6 text-gray-500">
           <time datetime={post.data.date} class="flex items-center">
             <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -68,6 +119,42 @@ const { Content } = await post.render();
       <Content />
     </article>
 
+    <!-- Engagement Section -->
+    <div class="mt-12 p-8 bg-gradient-to-r from-purple-50 to-blue-50 rounded-2xl">
+      <div class="text-center mb-8">
+        <h3 class="text-2xl font-bold text-gray-900 mb-4">💭 What's your reaction?</h3>
+
+        <!-- Reaction Buttons -->
+        <div class="flex justify-center gap-3 mb-8 flex-wrap">
+          <button onclick="addReaction('mind-blown')" class="reaction-btn bg-white border-2 border-gray-200 hover:border-purple-500 rounded-full px-6 py-3 font-medium transition-all" data-reaction="mind-blown">
+            🤯 Mind-blown <span class="count bg-purple-100 text-purple-800 px-2 py-1 rounded-full text-sm ml-2">0</span>
+          </button>
+          <button onclick="addReaction('interesting')" class="reaction-btn bg-white border-2 border-gray-200 hover:border-purple-500 rounded-full px-6 py-3 font-medium transition-all" data-reaction="interesting">
+            🤔 Interesting <span class="count bg-purple-100 text-purple-800 px-2 py-1 rounded-full text-sm ml-2">0</span>
+          </button>
+          <button onclick="addReaction('useful')" class="reaction-btn bg-white border-2 border-gray-200 hover:border-purple-500 rounded-full px-6 py-3 font-medium transition-all" data-reaction="useful">
+            💡 Useful <span class="count bg-purple-100 text-purple-800 px-2 py-1 rounded-full text-sm ml-2">0</span>
+          </button>
+          <button onclick="addReaction('amazing')" class="reaction-btn bg-white border-2 border-gray-200 hover:border-purple-500 rounded-full px-6 py-3 font-medium transition-all" data-reaction="amazing">
+            🚀 Amazing <span class="count bg-purple-100 text-purple-800 px-2 py-1 rounded-full text-sm ml-2">0</span>
+          </button>
+        </div>
+
+        <!-- Newsletter Signup in Article -->
+        <div class="bg-white p-6 rounded-xl border-2 border-purple-200 max-w-md mx-auto">
+          <h4 class="text-lg font-bold text-gray-900 mb-2">🧠 Never miss mind-blowing content!</h4>
+          <p class="text-gray-600 mb-4 text-sm">Join 1000+ curious minds getting daily knowledge drops</p>
+          <form class="flex gap-2 newsletter-form" onsubmit="handleNewsletterSignup(event)">
+            <input type="email" placeholder="Enter your email" required
+                   class="flex-1 px-4 py-2 border-2 border-gray-200 rounded-lg focus:border-purple-500 focus:outline-none">
+            <button type="submit" class="bg-purple-600 hover:bg-purple-700 text-white px-6 py-2 rounded-lg font-medium transition-colors">
+              Join
+            </button>
+          </form>
+        </div>
+      </div>
+    </div>
+
     <!-- Social Sharing -->
     <div class="mt-12 p-8 bg-gradient-to-r from-purple-50 to-blue-50 rounded-2xl">
       <div class="text-center">
@@ -76,7 +163,7 @@ const { Content } = await post.render();
         <div class="flex justify-center space-x-4">
           <button onclick="shareOnTwitter()" class="bg-blue-500 hover:bg-blue-600 text-white px-6 py-3 rounded-lg font-medium transition-colors flex items-center">
             <svg class="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 24 24">
-              <path d="M23.953 4.57a10 10 0 01-2.825.775 4.958 4.958 0 002.163-2.723c-.951.555-2.005.959-3.127 1.184a4.92 4.92 0 00-8.384 4.482C7.69 8.095 4.067 6.13 1.64 3.162a4.822 4.822 0 00-.666 2.475c0 1.71.87 3.213 2.188 4.096a4.904 4.904 0 01-2.228-.616v.06a4.923 4.923 0 003.946 4.827 4.996 4.996 0 01-2.212.085 4.936 4.936 0 004.604 3.417 9.867 9.867 0 01-6.102 2.105c-.39 0-.779-.023-1.17-.067a13.995 13.995 0 007.557 2.209c9.053 0 13.998-7.496 13.998-13.985 0-.21 0-.42-.015-.63A9.935 9.935 0 0024 4.59z"/>
+              <path d="M23.953 4.57a10 10 0 01-2.825.775 4.958 4.958 0 002.163-2.723c-.951.555-2.005.959-3.127 1.184a4.92 4.92 0 00-8.384 4.482C7.69 8.095 4.067 6.13 1.64 3.162a4.822 4.822 0 00-.666 2.475c0 1.71.87 3.213 2.188 4.096a4.904 4.904 0 01-2.228-.616v.06a4.923 4.923 0 003.946 4.827 4.996 4.996 0 01-2.212.085 4.936 4.936 0 004.604 3.417 a9.867 9.867 0 01-6.102 2.105c-.39 0-.779-.023-1.17-.067a13.995 13.995 0 007.557 2.209c9.053 0 13.998-7.496 13.998-13.985 0-.21 0-.42-.015-.63A9.935 9.935 0 0024 4.59z"/>
             </svg>
             Tweet This
           </button>
@@ -122,20 +209,414 @@ const { Content } = await post.render();
   </main>
 
   <script>
+    // Reading Progress Bar Script
+    document.addEventListener('scroll', () => {
+      const scrollTop = window.scrollY;
+      const docHeight = document.body.scrollHeight - window.innerHeight;
+      const progress = (scrollTop / docHeight) * 100;
+      document.getElementById('reading-progress').style.width = Math.min(progress, 100) + '%';
+    });
+
+    // Enhanced Reaction System with Local Storage
+    function addReaction(type) {
+      const storageKey = `reactions_${window.location.pathname}`;
+      const userReactionsKey = `user_reactions_${window.location.pathname}`;
+
+      let reactions = JSON.parse(localStorage.getItem(storageKey) || '{}');
+      let userReactions = JSON.parse(localStorage.getItem(userReactionsKey) || '[]');
+
+      if (!userReactions.includes(type)) {
+        reactions[type] = (reactions[type] || 0) + 1;
+        userReactions.push(type);
+
+        localStorage.setItem(storageKey, JSON.stringify(reactions));
+        localStorage.setItem(userReactionsKey, JSON.stringify(userReactions));
+
+        updateReactionDisplay();
+
+        // Visual feedback
+        const btn = document.querySelector(`[data-reaction="${type}"]`);
+        btn.style.background = '#9333ea';
+        btn.style.color = 'white';
+        btn.style.borderColor = '#9333ea';
+        btn.style.transform = 'scale(1.05)';
+
+        setTimeout(() => {
+          btn.style.transform = 'scale(1)';
+        }, 200);
+
+        // Track analytics event
+        if (typeof gtag !== 'undefined') {
+          gtag('event', 'reaction', {
+            'event_category': 'engagement',
+            'event_label': type,
+            'value': 1
+          });
+        }
+      }
+    }
+
+    function updateReactionDisplay() {
+      const storageKey = `reactions_${window.location.pathname}`;
+      const userReactionsKey = `user_reactions_${window.location.pathname}`;
+      const reactions = JSON.parse(localStorage.getItem(storageKey) || '{}');
+      const userReactions = JSON.parse(localStorage.getItem(userReactionsKey) || '[]');
+
+      document.querySelectorAll('.reaction-btn').forEach(btn => {
+        const reaction = btn.dataset.reaction;
+        const count = reactions[reaction] || 0;
+        btn.querySelector('.count').textContent = count;
+
+        if (userReactions.includes(reaction)) {
+          btn.style.background = '#9333ea';
+          btn.style.color = 'white';
+          btn.style.borderColor = '#9333ea';
+        }
+      });
+    }
+
+    // Enhanced Newsletter Signup
+    function handleNewsletterSignup(event) {
+      event.preventDefault();
+      const email = event.target.querySelector('input[type="email"]').value;
+
+      // Store email for future use (replace with real API call)
+      localStorage.setItem('newsletter_email', email);
+      // Mark newsletter as dismissed for this session
+      localStorage.setItem('newsletter_dismissed', 'true');
+
+      // Show success message
+      const form = event.target;
+      form.innerHTML = `
+        <div class="text-green-600 font-medium">
+          ✅ Success! You'll receive amazing content daily.
+        </div>
+      `;
+
+      // Track conversion
+      if (typeof gtag !== 'undefined') {
+        gtag('event', 'newsletter_signup', {
+          'event_category': 'engagement',
+          'event_label': 'article_page'
+        });
+      }
+    }
+
+    // Newsletter pop-up dismissal logic for all forms
+    function hideNewsletterFormsIfDismissed() {
+      if (localStorage.getItem('newsletter_dismissed') === 'true') {
+        document.querySelectorAll('.newsletter-form').forEach(form => {
+          form.style.display = 'none';
+          // Optionally, hide parent container if needed
+          if (form.parentElement) {
+            form.parentElement.style.display = 'none';
+          }
+        });
+      }
+    }
+
+    // Add close button to all newsletter forms
+    function addNewsletterCloseButtons() {
+      document.querySelectorAll('.newsletter-form').forEach(form => {
+        if (!form.querySelector('.newsletter-close')) {
+          const closeBtn = document.createElement('button');
+          closeBtn.type = 'button';
+          closeBtn.textContent = '×';
+          closeBtn.className = 'newsletter-close';
+          closeBtn.style.cssText = 'position:absolute;top:8px;right:12px;font-size:1.5rem;background:none;border:none;color:#888;cursor:pointer;z-index:10;';
+          closeBtn.onclick = function() {
+            localStorage.setItem('newsletter_dismissed', 'true');
+            hideNewsletterFormsIfDismissed();
+          };
+          form.style.position = 'relative';
+          form.appendChild(closeBtn);
+        }
+      });
+    }
+
+    // Social Sharing with Enhanced Tracking
+    const currentUrl = window.location.href;
+    const articleTitle = document.querySelector('h1').textContent;
+
     function shareOnTwitter() {
-      const url = window.location.href;
-      const text = document.title;
-      window.open(`https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}&url=${encodeURIComponent(url)}`, '_blank');
+      const text = `🧠 AKIL ALMAZ: ${articleTitle}\n\nBu düşünce tarzınızı değiştirecek! 🤯\n\n#MindPulse #Bilim #Psikoloji`;
+      const twitterUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}&url=${encodeURIComponent(currentUrl)}`;
+      window.open(twitterUrl, '_blank', 'width=600,height=400,scrollbars=yes,resizable=yes');
+      trackShare('twitter');
+    }
+
+    function shareOnFacebook() {
+      const facebookUrl = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(currentUrl)}`;
+      window.open(facebookUrl, '_blank', 'width=600,height=400,scrollbars=yes,resizable=yes');
+      trackShare('facebook');
     }
 
     function shareOnLinkedIn() {
-      const url = window.location.href;
-      window.open(`https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(url)}`, '_blank');
+      const linkedinUrl = `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(currentUrl)}`;
+      window.open(linkedinUrl, '_blank', 'width=600,height=500,scrollbars=yes,resizable=yes');
+      trackShare('linkedin');
     }
 
     function copyLink() {
-      navigator.clipboard.writeText(window.location.href);
-      alert('Link copied to clipboard!');
+      // Modern browsers
+      if (navigator.clipboard && window.isSecureContext) {
+        navigator.clipboard.writeText(currentUrl).then(() => {
+          showCopySuccess();
+        }).catch(() => {
+          fallbackCopyTextToClipboard(currentUrl);
+        });
+      } else {
+        // Fallback for older browsers
+        fallbackCopyTextToClipboard(currentUrl);
+      }
     }
+
+    function fallbackCopyTextToClipboard(text) {
+      const textArea = document.createElement("textarea");
+      textArea.value = text;
+      textArea.style.top = "0";
+      textArea.style.left = "0";
+      textArea.style.position = "fixed";
+      document.body.appendChild(textArea);
+      textArea.focus();
+      textArea.select();
+
+      try {
+        document.execCommand('copy');
+        showCopySuccess();
+      } catch (err) {
+        console.error('Fallback: Oops, unable to copy', err);
+        showCopyError();
+      }
+
+      document.body.removeChild(textArea);
+    }
+
+    function showCopySuccess() {
+      // Show toast notification
+      const toast = document.createElement('div');
+      toast.innerHTML = '🎉 Link panoya kopyalandı!';
+      toast.style.cssText = `
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        background: #10b981;
+        color: white;
+        padding: 12px 24px;
+        border-radius: 8px;
+        font-weight: 600;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        z-index: 10000;
+        animation: slideIn 0.3s ease-out;
+      `;
+
+      document.body.appendChild(toast);
+
+      setTimeout(() => {
+        toast.style.animation = 'slideOut 0.3s ease-in';
+        setTimeout(() => toast.remove(), 300);
+      }, 2500);
+
+      trackShare('copy_link');
+    }
+
+    function showCopyError() {
+      const toast = document.createElement('div');
+      toast.innerHTML = '❌ Link kopyalanamadı. Manuel olarak kopyalayın.';
+      toast.style.cssText = `
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        background: #ef4444;
+        color: white;
+        padding: 12px 24px;
+        border-radius: 8px;
+        font-weight: 600;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        z-index: 10000;
+      `;
+
+      document.body.appendChild(toast);
+      setTimeout(() => toast.remove(), 3000);
+    }
+
+    function trackShare(platform) {
+      if (typeof gtag !== 'undefined') {
+        gtag('event', 'share', {
+          'event_category': 'engagement',
+          'event_label': platform,
+          'value': 1
+        });
+      }
+    }
+
+    // Initialize reactions on page load
+    document.addEventListener('DOMContentLoaded', () => {
+      updateReactionDisplay();
+      hideNewsletterFormsIfDismissed();
+      addNewsletterCloseButtons();
+
+      // Track page view
+      if (typeof gtag !== 'undefined') {
+        gtag('event', 'article_view', {
+          'event_category': 'content',
+          'event_label': articleTitle
+        });
+      }
+    });
+
+    // Enhanced Analytics Integration
+    let readingStartTime = Date.now();
+    let hasScrolledPastHalfway = false;
+    let engagementScore = 0;
+
+    // Track reading completion
+    function trackReadingCompletion() {
+      const readingTime = Math.round((Date.now() - readingStartTime) / 1000);
+      const scrollDepth = Math.round((window.scrollY / (document.body.scrollHeight - window.innerHeight)) * 100);
+
+      if (readingTime > 30 && scrollDepth > 70) {
+        engagementScore += 10;
+
+        if (typeof gtag !== 'undefined') {
+          gtag('event', 'reading_completed', {
+            'event_category': 'engagement',
+            'event_label': 'article_completion',
+            'value': readingTime
+          });
+        }
+      }
+    }
+
+    // Enhanced scroll tracking with engagement scoring
+    let maxScroll = 0;
+    let scrollTracked = {};
+
+    window.addEventListener('scroll', () => {
+      const scrollPercent = Math.round((window.scrollY / (document.body.scrollHeight - window.innerHeight)) * 100);
+
+      if (scrollPercent > maxScroll) {
+        maxScroll = scrollPercent;
+
+        // Track significant engagement
+        if (scrollPercent > 50 && !hasScrolledPastHalfway) {
+          hasScrolledPastHalfway = true;
+          engagementScore += 5;
+        }
+
+        // Track scroll milestones
+        [25, 50, 75, 90].forEach(milestone => {
+          if (scrollPercent >= milestone && !scrollTracked[milestone]) {
+            scrollTracked[milestone] = true;
+            engagementScore += 2;
+
+            if (typeof gtag !== 'undefined') {
+              gtag('event', 'scroll', {
+                'event_category': 'engagement',
+                'event_label': `${milestone}_percent`,
+                'value': milestone
+              });
+            }
+          }
+        });
+      }
+
+      // Update reading progress bar
+      const progressBar = document.getElementById('reading-progress');
+      if (progressBar) {
+        progressBar.style.width = `${scrollPercent}%`;
+      }
+    });
+
+    // Enhanced time tracking with engagement analysis
+    const startTime = Date.now();
+    let timeOnPageSent = false;
+
+    setInterval(() => {
+      const timeSpent = Math.round((Date.now() - startTime) / 1000);
+
+      // Track engagement milestones
+      if (timeSpent > 60 && engagementScore > 5) {
+        trackReadingCompletion();
+      }
+
+      // Send time data after 2 minutes
+      if (timeSpent > 120 && !timeOnPageSent) {
+        timeOnPageSent = true;
+        if (typeof gtag !== 'undefined') {
+          gtag('event', 'engaged_reading', {
+            'event_category': 'engagement',
+            'event_label': 'long_read',
+            'value': timeSpent
+          });
+        }
+      }
+    }, 30000); // Check every 30 seconds
+
+    window.addEventListener('beforeunload', () => {
+      const timeSpent = Math.round((Date.now() - startTime) / 1000);
+
+      // Send final engagement data
+      if (typeof gtag !== 'undefined') {
+        gtag('event', 'time_on_page', {
+          'event_category': 'engagement',
+          'value': timeSpent,
+          'custom_parameter': engagementScore
+        });
+      }
+
+      // Store for analytics dashboard
+      const analytics = JSON.parse(localStorage.getItem('mindpulse_analytics') || '{}');
+      analytics.timeOnPage = (analytics.timeOnPage || 0) + timeSpent;
+      analytics.totalEngagementScore = (analytics.totalEngagementScore || 0) + engagementScore;
+      localStorage.setItem('mindpulse_analytics', JSON.stringify(analytics));
+    });
+
+    // Simulate and track view counts
+    function updateViewCount() {
+      const viewCountSpan = document.querySelector('.view-counter');
+      if (viewCountSpan) {
+        const currentViews = parseInt(localStorage.getItem(`views_${window.location.pathname}`) || '0');
+        const newViews = currentViews + Math.floor(Math.random() * 3) + 1;
+        localStorage.setItem(`views_${window.location.pathname}`, newViews.toString());
+        viewCountSpan.textContent = newViews.toLocaleString();
+      }
+    }
+
+    // Initialize view count
+    updateViewCount();
+
+    // Update view count periodically
+    setInterval(updateViewCount, 30000);
+
+    // Add CSS animations for toasts
+    const style = document.createElement('style');
+    style.textContent = `
+      @keyframes slideIn {
+        from {
+          transform: translateX(100%);
+          opacity: 0;
+        }
+        to {
+          transform: translateX(0);
+          opacity: 1;
+        }
+      }
+
+      @keyframes slideOut {
+        from {
+          transform: translateX(0);
+          opacity: 1;
+        }
+        to {
+          transform: translateX(100%);
+          opacity: 0;
+        }
+      }
+    `;
+    document.head.appendChild(style);
   </script>
+
+  <!-- Advanced Analytics Script -->
+  <script src="/src/components/AdvancedAnalytics.js" type="module"></script>
 </Layout>

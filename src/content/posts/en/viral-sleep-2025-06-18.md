@@ -9,7 +9,9 @@ image: "brain_cleaning_sleep_neurons"
 
 ## 🔍 The Discovery
 
-What if everything you thought you knew about sleep was wrong? Scientists have just discovered that your brain has a secret "cleaning system" that only activates when you're unconscious - and it might be the key to preventing Alzheimer's, boosting creativity, and enhancing memory.
+What if everything you thought you knew about sleep was wrong? For years, scientists thought sleep was simply a time for rest, but new research has turned that idea upside down. It turns out your brain is hard at work while you’re asleep, performing vital tasks that keep you healthy and sharp.
+
+Scientists have just discovered that your brain has a secret "cleaning system" that only activates when you're unconscious – and it might be the key to preventing Alzheimer's, boosting creativity, and enhancing memory. This discovery is changing how we think about sleep and its role in our lives.
 
 ## 📊 What Science Shows
 
