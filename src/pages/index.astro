@@ -47,71 +47,102 @@ const englishPosts = posts.filter(p => p.data.language === 'en').slice(0, 5);
         <a href="/" style="padding: 0.5rem 1rem; background: white; border-radius: 0.375rem; box-shadow: 0 1px 3px rgba(0,0,0,0.1); color: #1f2937; font-weight: 500; text-decoration: none;">English</a>
         <a href="/tr" style="padding: 0.5rem 1rem; color: #6b7280; text-decoration: none;">Türkçe</a>
       </div>
-    </div><!-- Latest Posts -->
-    <div class="space-y-8">
-      <!-- Featured Article -->
-      {englishPosts[0] && (
-        <div class="bg-gradient-to-r from-purple-600 to-blue-600 rounded-2xl overflow-hidden shadow-2xl">
-          <div class="p-8 text-white">
-            <div class="flex items-center mb-4">
-              <span class="bg-white/20 px-3 py-1 rounded-full text-sm font-medium">🔥 Trending</span>
-              {englishPosts[0].data.category && (
-                <span class="ml-3 bg-white/10 px-3 py-1 rounded-full text-sm">{englishPosts[0].data.category}</span>
-              )}
-            </div>
-            <h2 class="text-3xl font-bold mb-4 leading-tight">
-              <a href={`/posts/${englishPosts[0].slug.replace('en/', '')}/`} class="hover:text-purple-200 transition-colors">
-                {englishPosts[0].data.title}
-              </a>
-            </h2>
-            <p class="text-purple-100 text-lg mb-6 leading-relaxed">{englishPosts[0].data.description}</p>
-            <div class="flex items-center justify-between">
-              <span class="text-purple-200 text-sm">{englishPosts[0].data.date}</span>
-              <a href={`/posts/${englishPosts[0].slug.replace('en/', '')}/`}
-                 class="bg-white text-purple-600 px-6 py-3 rounded-lg font-semibold hover:bg-purple-50 transition-colors flex items-center">
-                Discover the Truth →
-              </a>
-            </div>
-          </div>
-        </div>
-      )}
+    </div>
 
-      <!-- Article Grid -->
-      <div class="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-        {englishPosts.slice(1).map(post => (
-          <article class="group bg-white rounded-xl shadow-md hover:shadow-2xl transition-all duration-300 border border-gray-100 overflow-hidden">
-            {post.data.category && (
-              <div class="h-2 bg-gradient-to-r from-purple-500 to-blue-500"></div>
-            )}
-            <div class="p-6">
-              <div class="flex items-center mb-3">
-                {post.data.category && (
-                  <span class="bg-purple-100 text-purple-800 px-3 py-1 rounded-full text-xs font-medium uppercase tracking-wide">
-                    {post.data.category}
-                  </span>
+    <!-- Ad Space: Header Banner (728x90) -->
+    <div style="display: flex; justify-content: center; margin-bottom: 2rem;">
+      <div style="width: 728px; height: 90px; background: linear-gradient(135deg, #f3f4f6 0%, #e5e7eb 100%); border: 2px dashed #d1d5db; border-radius: 0.5rem; display: flex; align-items: center; justify-content: center; color: #6b7280; font-size: 0.875rem;">
+        📢 Advertisement Space (728x90)
+      </div>
+    </div>
+
+    <!-- Latest Posts -->
+    <div style="display: grid; grid-template-columns: 1fr 300px; gap: 2rem; align-items: start;">
+      <!-- Main Content -->
+      <div class="space-y-8">
+        <!-- Featured Article -->
+        {englishPosts[0] && (
+          <div class="bg-gradient-to-r from-purple-600 to-blue-600 rounded-2xl overflow-hidden shadow-2xl">
+            <div class="p-8 text-white">
+              <div class="flex items-center mb-4">
+                <span class="bg-white/20 px-3 py-1 rounded-full text-sm font-medium">🔥 Trending</span>
+                {englishPosts[0].data.category && (
+                  <span class="ml-3 bg-white/10 px-3 py-1 rounded-full text-sm">{englishPosts[0].data.category}</span>
                 )}
-                <span class="ml-auto text-xs text-gray-500">{post.data.date}</span>
               </div>
-              <h2 class="text-xl font-bold text-gray-900 mb-3 leading-tight group-hover:text-purple-600 transition-colors">
-                <a href={`/posts/${post.slug.replace('en/', '')}/`} class="block">
-                  {post.data.title}
+              <h2 class="text-3xl font-bold mb-4 leading-tight">
+                <a href={`/posts/${englishPosts[0].slug.replace('en/', '')}/`} class="hover:text-purple-200 transition-colors">
+                  {englishPosts[0].data.title}
                 </a>
               </h2>
-              <p class="text-gray-600 mb-4 leading-relaxed">{post.data.description}</p>
+              <p class="text-purple-100 text-lg mb-6 leading-relaxed">{englishPosts[0].data.description}</p>
               <div class="flex items-center justify-between">
-                <div class="flex items-center space-x-2">
-                  <span class="text-sm text-gray-500">🧠 Mind-expanding</span>
-                </div>
-                <a href={`/posts/${post.slug.replace('en/', '')}/`}
-                   class="text-purple-600 font-medium hover:text-purple-700 transition-colors flex items-center">
-                  Read More →
+                <span class="text-purple-200 text-sm">{englishPosts[0].data.date}</span>
+                <a href={`/posts/${englishPosts[0].slug.replace('en/', '')}/`}
+                   class="bg-white text-purple-600 px-6 py-3 rounded-lg font-semibold hover:bg-purple-50 transition-colors flex items-center">
+                  Discover the Truth →
                 </a>
               </div>
             </div>
-          </article>
-        ))}
+          </div>
+        )}
+
+        <!-- Ad Space: In-Content Rectangle (300x250) -->
+        <div style="display: flex; justify-content: center; margin: 2rem 0;">
+          <div style="width: 300px; height: 250px; background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%); border: 2px dashed #f59e0b; border-radius: 0.5rem; display: flex; align-items: center; justify-content: center; color: #92400e; font-size: 0.875rem; text-align: center; font-weight: 500;">
+            💰 Premium Ad Space<br>(300x250)
+          </div>
+        </div>
+
+        <!-- Article Grid -->
+        <div class="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+          {englishPosts.slice(1).map(post => (
+            <article class="group bg-white rounded-xl shadow-md hover:shadow-2xl transition-all duration-300 border border-gray-100 overflow-hidden">
+              {post.data.category && (
+                <div class="h-2 bg-gradient-to-r from-purple-500 to-blue-500"></div>
+              )}
+              <div class="p-6">
+                <div class="flex items-center mb-3">
+                  {post.data.category && (
+                    <span class="bg-purple-100 text-purple-800 px-3 py-1 rounded-full text-xs font-medium uppercase tracking-wide">
+                      {post.data.category}
+                    </span>
+                  )}
+                  <span class="ml-auto text-xs text-gray-500">{post.data.date}</span>
+                </div>
+                <h2 class="text-xl font-bold text-gray-900 mb-3 leading-tight group-hover:text-purple-600 transition-colors">
+                  <a href={`/posts/${post.slug.replace('en/', '')}/`} class="block">
+                    {post.data.title}
+                  </a>
+                </h2>
+                <p class="text-gray-600 mb-4 leading-relaxed">{post.data.description}</p>
+                <div class="flex items-center justify-between">
+                  <div class="flex items-center space-x-2">
+                    <span class="text-sm text-gray-500">🧠 Mind-expanding</span>
+                  </div>
+                  <a href={`/posts/${post.slug.replace('en/', '')}/`}
+                     class="text-purple-600 font-medium hover:text-purple-700 transition-colors flex items-center">
+                    Read More →
+                  </a>
+                </div>
+              </div>
+            </article>
+          ))}
+        </div>
       </div>
-    </div>    <!-- Enhanced Call to Action -->
+
+      <!-- Sidebar -->
+      <div class="space-y-6">
+        <!-- Ad Space: Sidebar (300x600) -->
+        <div style="position: sticky; top: 2rem;">
+          <div style="width: 300px; height: 600px; background: linear-gradient(135deg, #ecfdf5 0%, #d1fae5 100%); border: 2px dashed #10b981; border-radius: 0.5rem; display: flex; align-items: center; justify-content: center; color: #065f46; font-size: 0.875rem; text-align: center; font-weight: 500;">
+            📈 Sidebar Ad<br>(300x600)<br><br>High-converting<br>placement
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Enhanced Call to Action -->
     <div class="relative mt-16 overflow-hidden">
       <div class="bg-gradient-to-br from-purple-600 via-blue-600 to-indigo-700 rounded-2xl p-12 text-center text-white relative">
         <div class="absolute inset-0 bg-black/10 rounded-2xl"></div>
