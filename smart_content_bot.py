@@ -1,4 +1,4 @@
-import openai
+from openai import OpenAI
 import os
 import requests
 import json
@@ -7,7 +7,7 @@ import uuid
 import random
 
 # API Configuration
-AI_PROVIDER = os.getenv("AI_PROVIDER", "deepseek")  # deepseek, openai
+AI_PROVIDER = os.getenv("AI_PROVIDER", "openai")  # openai, deepseek
 DEEPSEEK_API_KEY = os.getenv("DEEPSEEK_API_KEY")
 OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
 DEEPSEEK_BASE_URL = "https://api.deepseek.com/v1"
@@ -56,9 +56,7 @@ def call_ai_api(prompt, max_tokens=1200, temperature=0.8):
         headers = {
             "Authorization": f"Bearer {DEEPSEEK_API_KEY}",
             "Content-Type": "application/json"
-        }
-
-        payload = {
+        }        payload = {
             "model": "deepseek-chat",
             "messages": [
                 {"role": "user", "content": prompt}
@@ -76,6 +74,17 @@ def call_ai_api(prompt, max_tokens=1200, temperature=0.8):
             response.raise_for_status()
             result = response.json()
             return result['choices'][0]['message']['content']
+        except requests.exceptions.HTTPError as e:
+            if e.response.status_code == 402:
+                print(f"💳 DeepSeek API: Payment Required - Check your account balance")
+            else:
+                print(f"❌ DeepSeek API HTTP error: {e}")
+
+            # Fallback to OpenAI if available
+            if OPENAI_API_KEY:
+                print("🔄 Falling back to OpenAI...")
+                return call_openai_api(prompt, max_tokens, temperature)
+            raise e
         except Exception as e:
             print(f"❌ DeepSeek API error: {e}")
             # Fallback to OpenAI if available
@@ -92,10 +101,10 @@ def call_ai_api(prompt, max_tokens=1200, temperature=0.8):
         raise ValueError("❌ No API key found! Set DEEPSEEK_API_KEY or OPENAI_API_KEY")
 
 def call_openai_api(prompt, max_tokens=1200, temperature=0.8):
-    """OpenAI API çağrısı"""
-    openai.api_key = OPENAI_API_KEY
+    """OpenAI API çağrısı - Yeni v1.0+ API"""
+    client = OpenAI(api_key=OPENAI_API_KEY)
 
-    response = openai.ChatCompletion.create(
+    response = client.chat.completions.create(
         model="gpt-4",
         messages=[
             {"role": "user", "content": prompt}
@@ -104,7 +113,7 @@ def call_openai_api(prompt, max_tokens=1200, temperature=0.8):
         temperature=temperature
     )
 
-    return response['choices'][0]['message']['content']
+    return response.choices[0].message.content
 
 def generate_viral_content():
     """Viral potansiyeli yüksek içerik üret"""
