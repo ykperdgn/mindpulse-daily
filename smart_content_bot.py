@@ -53,10 +53,13 @@ def call_ai_api(prompt, max_tokens=1200, temperature=0.8):
 
     if AI_PROVIDER == "deepseek" and DEEPSEEK_API_KEY:
         print(f"🧠 Using DeepSeek API...")
+
         headers = {
             "Authorization": f"Bearer {DEEPSEEK_API_KEY}",
             "Content-Type": "application/json"
-        }        payload = {
+        }
+
+        payload = {
             "model": "deepseek-chat",
             "messages": [
                 {"role": "user", "content": prompt}
