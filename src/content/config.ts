@@ -5,7 +5,7 @@ const postSchema = z.object({
   description: z.string(),
   date: z.string(),
   language: z.enum(['en', 'tr']),
-  category: z.string().optional(),
+  category: z.enum(['psychology', 'astrology', 'space', 'history', 'science', 'lifestyle', 'mystery']).optional(),
   image: z.string().optional(),
 });
 

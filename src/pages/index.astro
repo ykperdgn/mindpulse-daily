@@ -2,7 +2,25 @@
 import Layout from '../layouts/Layout.astro';
 import { getCollection } from 'astro:content';
 const posts = await getCollection('posts');
-const englishPosts = posts.filter(p => p.data.language === 'en').slice(0, 5);
+const englishPosts = posts.filter(p => p.data.language === 'en').slice(0, 12);
+
+// Group posts by category
+const categories = {
+  psychology: { name: 'Psychology', emoji: '🧠', color: '#9333ea' },
+  astrology: { name: 'Astrology & Zodiac', emoji: '⭐', color: '#f59e0b' },
+  space: { name: 'Space & Cosmos', emoji: '🚀', color: '#2563eb' },
+  history: { name: 'History & Ancient', emoji: '🏛️', color: '#059669' },
+  science: { name: 'Science & Discovery', emoji: '🔬', color: '#dc2626' },
+  lifestyle: { name: 'Health & Lifestyle', emoji: '🌿', color: '#16a34a' },
+  mystery: { name: 'Mysteries & Phenomena', emoji: '👁️', color: '#7c3aed' }
+};
+
+const categorizedPosts = Object.fromEntries(
+  Object.keys(categories).map(cat => [
+    cat,
+    englishPosts.filter(p => p.data.category === cat).slice(0, 2)
+  ])
+);
 ---
 
 <Layout title="MindPulse Daily - Daily Knowledge Drops">
@@ -47,6 +65,25 @@ const englishPosts = posts.filter(p => p.data.language === 'en').slice(0, 5);
         <a href="/" style="padding: 0.5rem 1rem; background: white; border-radius: 0.375rem; box-shadow: 0 1px 3px rgba(0,0,0,0.1); color: #1f2937; font-weight: 500; text-decoration: none;">English</a>
         <a href="/tr" style="padding: 0.5rem 1rem; color: #6b7280; text-decoration: none;">Türkçe</a>
       </div>
+    </div>    <!-- Category Navigation -->
+    <div style="margin-bottom: 3rem;">
+      <h2 style="text-align: center; font-size: 2rem; font-weight: 700; color: #1f2937; margin-bottom: 2rem;">
+        🎯 Explore Categories
+      </h2>
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; max-width: 900px; margin: 0 auto;">
+        {Object.entries(categories).map(([key, cat]) => (
+          <a href={`#${key}`}
+             style={`display: flex; align-items: center; gap: 0.75rem; padding: 1rem; background: white; border-radius: 0.75rem; box-shadow: 0 2px 8px rgba(0,0,0,0.1); text-decoration: none; transition: transform 0.2s, box-shadow 0.2s; border-left: 4px solid ${cat.color};`}
+             onmouseover={`this.style.transform='translateY(-2px)'; this.style.boxShadow='0 4px 16px rgba(0,0,0,0.15)';`}
+             onmouseout={`this.style.transform='translateY(0)'; this.style.boxShadow='0 2px 8px rgba(0,0,0,0.1)';`}>
+            <span style="font-size: 1.5rem;">{cat.emoji}</span>
+            <div>
+              <div style="font-weight: 600; color: #1f2937; font-size: 0.875rem;">{cat.name}</div>
+              <div style="color: #6b7280; font-size: 0.75rem;">{categorizedPosts[key]?.length || 0} articles</div>
+            </div>
+          </a>
+        ))}
+      </div>
     </div>
 
     <!-- Ad Space: Header Banner (728x90) -->
@@ -55,6 +92,64 @@ const englishPosts = posts.filter(p => p.data.language === 'en').slice(0, 5);
         📢 Advertisement Space (728x90)
       </div>
     </div>
+
+    <!-- Category Sections -->
+    {Object.entries(categories).map(([categoryKey, categoryInfo]) => {
+      const categoryPosts = categorizedPosts[categoryKey];
+      if (!categoryPosts || categoryPosts.length === 0) return null;
+
+      return (
+        <section id={categoryKey} style="margin-bottom: 4rem;">
+          <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 2rem;">
+            <span style="font-size: 2rem;">{categoryInfo.emoji}</span>
+            <h2 style={`font-size: 1.5rem; font-weight: 700; color: ${categoryInfo.color}; margin: 0;`}>
+              {categoryInfo.name}
+            </h2>
+          </div>
+
+          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(400px, 1fr)); gap: 1.5rem;">
+            {categoryPosts.map((post) => (
+              <article style="background: white; border-radius: 1rem; overflow: hidden; box-shadow: 0 4px 12px rgba(0,0,0,0.1); transition: transform 0.2s, box-shadow 0.2s; border-top: 4px solid ${categoryInfo.color};"
+                       onmouseover="this.style.transform='translateY(-4px)'; this.style.boxShadow='0 8px 25px rgba(0,0,0,0.15)';"
+                       onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 4px 12px rgba(0,0,0,0.1)';">
+                <div style="padding: 1.5rem;">
+                  <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 1rem;">
+                    <span style="font-size: 1rem;">{categoryInfo.emoji}</span>
+                    <span style={`font-size: 0.75rem; font-weight: 600; color: ${categoryInfo.color}; text-transform: uppercase; letter-spacing: 0.05em;`}>
+                      {categoryInfo.name}
+                    </span>
+                  </div>
+
+                  <h3 style="font-size: 1.125rem; font-weight: 700; color: #1f2937; margin-bottom: 0.75rem; line-height: 1.4;">
+                    <a href={`/posts/${post.slug}`} style="text-decoration: none; color: inherit; hover:color: #9333ea;">
+                      {post.data.title}
+                    </a>
+                  </h3>
+
+                  <p style="color: #6b7280; font-size: 0.875rem; line-height: 1.5; margin-bottom: 1rem;">
+                    {post.data.description}
+                  </p>
+
+                  <div style="display: flex; justify-content: between; align-items: center;">
+                    <span style="font-size: 0.75rem; color: #9ca3af;">
+                      {new Date(post.data.date).toLocaleDateString('en-US', {
+                        month: 'short',
+                        day: 'numeric',
+                        year: 'numeric'
+                      })}
+                    </span>
+                    <a href={`/posts/${post.slug}`}
+                       style={`font-size: 0.875rem; font-weight: 500; color: ${categoryInfo.color}; text-decoration: none; margin-left: auto;`}>
+                      Read More →
+                    </a>
+                  </div>
+                </div>
+              </article>
+            ))}
+          </div>
+        </section>
+      );
+    })}
 
     <!-- Latest Posts -->
     <div style="display: grid; grid-template-columns: 1fr 300px; gap: 2rem; align-items: start;">

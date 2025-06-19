@@ -3,7 +3,7 @@ title: "Bilim İnsanları Uyku Hakkında Kimsenin Konuşmadığı Şoke Edici Ge
 description: "Yeni araştırmalar beyninizin uyurken kelimenin tam anlamıyla kendini temizlediğini ortaya koyuyor - sonuçları akıllara durgunluk veriyor."
 date: "2025-06-18"
 language: "tr"
-category: "psikoloji"
+category: "psychology"
 image: "beyin_temizligi_uyku_noronlar"
 ---
 
