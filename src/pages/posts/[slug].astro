@@ -4,24 +4,39 @@ import Layout from '../../layouts/Layout.astro';
 import ContentRecommendations from '../../components/ContentRecommendations.astro';
 
 export async function getStaticPaths() {
-  const posts = await getCollection('posts');
-  const englishPosts = posts.filter(p => p.data.language === 'en');
+  try {
+    const posts = await getCollection('posts');
 
-  return englishPosts.map(post => {
-    // Extract slug from post.id and remove .md extension if present
-    let slug = post.id.startsWith('en/') ? post.id.slice(3) : post.id;
-    slug = slug.replace(/\.md$/, ''); // Remove .md extension
+    // Only get posts that are in the en/ directory AND have language 'en'
+    const englishPosts = posts.filter(post => {
+      const isInEnDir = post.id.startsWith('en/');
+      const hasEnLang = post.data.language === 'en';
+      return isInEnDir && hasEnLang;
+    });
 
-    // Skip posts with empty or invalid slugs
-    if (!slug || slug.trim() === '') {
-      return null;
-    }
+    const paths = englishPosts.map(post => {
+      // Extract slug from post.id and remove .md extension if present
+      let slug = post.id.startsWith('en/') ? post.id.slice(3) : post.id;
+      slug = slug.replace(/\.md$/, ''); // Remove .md extension
 
-    return {
-      params: { slug },
-      props: { post },
-    };
-  }).filter(Boolean); // Remove null entries
+      // Skip posts with empty or invalid slugs
+      if (!slug || slug.trim() === '' || slug.includes('/')) {
+        console.warn(`Skipping post with invalid slug: ${post.id}`);
+        return null;
+      }
+
+      return {
+        params: { slug },
+        props: { post },
+      };
+    }).filter(Boolean); // Remove null entries
+
+    console.log(`Generated ${paths.length} English post routes`);
+    return paths;
+  } catch (error) {
+    console.error('Error generating English post routes:', error);
+    return [];
+  }
 }
 
 const { post } = Astro.props;
