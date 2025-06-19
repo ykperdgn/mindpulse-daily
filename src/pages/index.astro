@@ -63,9 +63,8 @@ const categorizedPosts = Object.fromEntries(
           </div>
           <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.2rem;">
             {categoryPosts.map((post) => (
-              <article style="background: white; border-radius: 0.75rem; overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,0.07); border-top: 3px solid ${categoryInfo.color}; transition: box-shadow 0.2s; padding: 1.2rem 1rem; display: flex; flex-direction: column; gap: 0.5rem;">
-                <h3 style="font-size: 1.05rem; font-weight: 700; color: #1f2937; margin-bottom: 0.5rem; line-height: 1.4;">
-                  <a href={`/posts/${post.slug}`} style="text-decoration: none; color: inherit;">
+              <article style="background: white; border-radius: 0.75rem; overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,0.07); border-top: 3px solid ${categoryInfo.color}; transition: box-shadow 0.2s; padding: 1.2rem 1rem; display: flex; flex-direction: column; gap: 0.5rem;">                <h3 style="font-size: 1.05rem; font-weight: 700; color: #1f2937; margin-bottom: 0.5rem; line-height: 1.4;">
+                  <a href={`/posts/${post.id.replace('en/', '').replace('.md', '')}`} style="text-decoration: none; color: inherit;">
                     {post.data.title}
                   </a>
                 </h3>
