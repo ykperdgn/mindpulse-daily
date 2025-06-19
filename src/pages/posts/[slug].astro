@@ -11,11 +11,17 @@ export async function getStaticPaths() {
     // Extract slug from post.id and remove .md extension if present
     let slug = post.id.startsWith('en/') ? post.id.slice(3) : post.id;
     slug = slug.replace(/\.md$/, ''); // Remove .md extension
+
+    // Skip posts with empty or invalid slugs
+    if (!slug || slug.trim() === '') {
+      return null;
+    }
+
     return {
       params: { slug },
       props: { post },
     };
-  });
+  }).filter(Boolean); // Remove null entries
 }
 
 const { post } = Astro.props;
