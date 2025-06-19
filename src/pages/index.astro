@@ -2,7 +2,7 @@
 import Layout from '../layouts/Layout.astro';
 import { getCollection } from 'astro:content';
 const posts = await getCollection('posts');
-const englishPosts = posts.filter(p => p.data.language === 'en').slice(0, 12);
+const englishPosts = posts.filter(p => p.data.language === 'en').slice(0, 15);
 
 // Group posts by category
 const categories = {
@@ -18,78 +18,34 @@ const categories = {
 const categorizedPosts = Object.fromEntries(
   Object.keys(categories).map(cat => [
     cat,
-    englishPosts.filter(p => p.data.category === cat).slice(0, 2)
+    englishPosts.filter(p => p.data.category === cat).slice(0, 3)
   ])
 );
 ---
 
 <Layout title="MindPulse Daily - Daily Knowledge Drops">
-  <main style="max-width: 1200px; margin: 0 auto; padding: 2rem 1rem;">
-    <!-- Hero Section -->
-    <div style="text-align: center; margin-bottom: 4rem;">
-      <div style="position: relative;">
-        <h1 style="font-size: 4rem; font-weight: 900; color: #1f2937; margin-bottom: 1.5rem; line-height: 1.1;">
-          🧠 <span style="background: linear-gradient(to right, #9333ea, #2563eb, #4f46e5); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">MindPulse</span>
-        </h1>
-      </div>
-      <p style="font-size: 1.5rem; color: #374151; margin-bottom: 1.5rem;">
-        <span style="font-weight: 700; color: #9333ea;">Mind-Blowing</span> Knowledge Drops
+  <main style="max-width: 900px; margin: 0 auto; padding: 2rem 1rem;">
+    <div style="text-align: center; margin-bottom: 3rem;">
+      <h1 style="font-size: 3rem; font-weight: 900; color: #1f2937; margin-bottom: 1.2rem; line-height: 1.1; letter-spacing: -0.03em;">
+        🧠 MindPulse Daily
+      </h1>
+      <p style="font-size: 1.25rem; color: #6b7280; margin-bottom: 2rem; max-width: 40rem; margin-left: auto; margin-right: auto; line-height: 1.6;">
+        Expand your mind with daily insights in psychology, science, space, astrology, and more. No noise, just pure knowledge.
       </p>
-      <p style="font-size: 1.125rem; color: #6b7280; margin-bottom: 2rem; max-width: 48rem; margin-left: auto; margin-right: auto; line-height: 1.6;">
-        Discover shocking truths about <span style="font-weight: 600; color: #9333ea;">human psychology</span>,
-        <span style="font-weight: 600; color: #2563eb;">space mysteries</span>,
-        <span style="font-weight: 600; color: #4f46e5;">ancient secrets</span>, and
-        <span style="font-weight: 600; color: #059669;">scientific breakthroughs</span> that will change how you see the world.
-      </p>
-
-      <!-- Stats Row -->
-      <div style="display: flex; justify-content: center; gap: 2rem; margin-bottom: 2rem; flex-wrap: wrap;">
-        <div style="background: rgba(255,255,255,0.8); backdrop-filter: blur(4px); border-radius: 0.5rem; padding: 1rem 1.5rem;">
-          <div style="font-size: 1.5rem; font-weight: 700; color: #9333ea;">1000+</div>
-          <div style="font-size: 0.875rem; color: #6b7280;">Mind-Blown Readers</div>
-        </div>
-        <div style="background: rgba(255,255,255,0.8); backdrop-filter: blur(4px); border-radius: 0.5rem; padding: 1rem 1.5rem;">
-          <div style="font-size: 1.5rem; font-weight: 700; color: #2563eb;">Daily</div>
-          <div style="font-size: 0.875rem; color: #6b7280;">New Discoveries</div>
-        </div>
-        <div style="background: rgba(255,255,255,0.8); backdrop-filter: blur(4px); border-radius: 0.5rem; padding: 1rem 1.5rem;">
-          <div style="font-size: 1.5rem; font-weight: 700; color: #059669;">100%</div>
-          <div style="font-size: 0.875rem; color: #6b7280;">Free Knowledge</div>
-        </div>
-      </div>
     </div>
 
-    <!-- Language Toggle -->
-    <div style="display: flex; justify-content: center; margin-bottom: 2rem;">
-      <div style="background: #f3f4f6; border-radius: 0.5rem; padding: 0.25rem; display: flex;">
-        <a href="/" style="padding: 0.5rem 1rem; background: white; border-radius: 0.375rem; box-shadow: 0 1px 3px rgba(0,0,0,0.1); color: #1f2937; font-weight: 500; text-decoration: none;">English</a>
-        <a href="/tr" style="padding: 0.5rem 1rem; color: #6b7280; text-decoration: none;">Türkçe</a>
-      </div>
-    </div>    <!-- Category Navigation -->
-    <div style="margin-bottom: 3rem;">
-      <h2 style="text-align: center; font-size: 2rem; font-weight: 700; color: #1f2937; margin-bottom: 2rem;">
-        🎯 Explore Categories
-      </h2>
-      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; max-width: 900px; margin: 0 auto;">
+    <!-- Category Navigation -->
+    <div style="margin-bottom: 2.5rem;">
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 1rem; max-width: 700px; margin: 0 auto;">
         {Object.entries(categories).map(([key, cat]) => (
           <a href={`#${key}`}
-             style={`display: flex; align-items: center; gap: 0.75rem; padding: 1rem; background: white; border-radius: 0.75rem; box-shadow: 0 2px 8px rgba(0,0,0,0.1); text-decoration: none; transition: transform 0.2s, box-shadow 0.2s; border-left: 4px solid ${cat.color};`}
-             onmouseover={`this.style.transform='translateY(-2px)'; this.style.boxShadow='0 4px 16px rgba(0,0,0,0.15)';`}
-             onmouseout={`this.style.transform='translateY(0)'; this.style.boxShadow='0 2px 8px rgba(0,0,0,0.1)';`}>
-            <span style="font-size: 1.5rem;">{cat.emoji}</span>
-            <div>
-              <div style="font-weight: 600; color: #1f2937; font-size: 0.875rem;">{cat.name}</div>
-              <div style="color: #6b7280; font-size: 0.75rem;">{categorizedPosts[key]?.length || 0} articles</div>
-            </div>
+             style={`display: flex; align-items: center; gap: 0.75rem; padding: 0.75rem 1rem; background: white; border-radius: 0.75rem; box-shadow: 0 2px 8px rgba(0,0,0,0.07); text-decoration: none; border-left: 4px solid ${cat.color}; font-weight: 500; color: #1f2937; transition: box-shadow 0.2s;`}
+             onmouseover={`this.style.boxShadow='0 4px 16px rgba(0,0,0,0.10)';`}
+             onmouseout={`this.style.boxShadow='0 2px 8px rgba(0,0,0,0.07)';`}>
+            <span style="font-size: 1.3rem;">{cat.emoji}</span>
+            <span>{cat.name}</span>
           </a>
         ))}
-      </div>
-    </div>
-
-    <!-- Ad Space: Header Banner (728x90) -->
-    <div style="display: flex; justify-content: center; margin-bottom: 2rem;">
-      <div style="width: 728px; height: 90px; background: linear-gradient(135deg, #f3f4f6 0%, #e5e7eb 100%); border: 2px dashed #d1d5db; border-radius: 0.5rem; display: flex; align-items: center; justify-content: center; color: #6b7280; font-size: 0.875rem;">
-        📢 Advertisement Space (728x90)
       </div>
     </div>
 
@@ -97,189 +53,37 @@ const categorizedPosts = Object.fromEntries(
     {Object.entries(categories).map(([categoryKey, categoryInfo]) => {
       const categoryPosts = categorizedPosts[categoryKey];
       if (!categoryPosts || categoryPosts.length === 0) return null;
-
       return (
-        <section id={categoryKey} style="margin-bottom: 4rem;">
-          <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 2rem;">
-            <span style="font-size: 2rem;">{categoryInfo.emoji}</span>
-            <h2 style={`font-size: 1.5rem; font-weight: 700; color: ${categoryInfo.color}; margin: 0;`}>
+        <section id={categoryKey} style="margin-bottom: 3rem;">
+          <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 1.5rem;">
+            <span style="font-size: 1.5rem;">{categoryInfo.emoji}</span>
+            <h2 style={`font-size: 1.2rem; font-weight: 700; color: ${categoryInfo.color}; margin: 0; letter-spacing: -0.01em;`}>
               {categoryInfo.name}
             </h2>
           </div>
-
-          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(400px, 1fr)); gap: 1.5rem;">
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.2rem;">
             {categoryPosts.map((post) => (
-              <article style="background: white; border-radius: 1rem; overflow: hidden; box-shadow: 0 4px 12px rgba(0,0,0,0.1); transition: transform 0.2s, box-shadow 0.2s; border-top: 4px solid ${categoryInfo.color};"
-                       onmouseover="this.style.transform='translateY(-4px)'; this.style.boxShadow='0 8px 25px rgba(0,0,0,0.15)';"
-                       onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 4px 12px rgba(0,0,0,0.1)';">
-                <div style="padding: 1.5rem;">
-                  <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 1rem;">
-                    <span style="font-size: 1rem;">{categoryInfo.emoji}</span>
-                    <span style={`font-size: 0.75rem; font-weight: 600; color: ${categoryInfo.color}; text-transform: uppercase; letter-spacing: 0.05em;`}>
-                      {categoryInfo.name}
-                    </span>
-                  </div>
-
-                  <h3 style="font-size: 1.125rem; font-weight: 700; color: #1f2937; margin-bottom: 0.75rem; line-height: 1.4;">
-                    <a href={`/posts/${post.slug}`} style="text-decoration: none; color: inherit; hover:color: #9333ea;">
-                      {post.data.title}
-                    </a>
-                  </h3>
-
-                  <p style="color: #6b7280; font-size: 0.875rem; line-height: 1.5; margin-bottom: 1rem;">
-                    {post.data.description}
-                  </p>
-
-                  <div style="display: flex; justify-content: between; align-items: center;">
-                    <span style="font-size: 0.75rem; color: #9ca3af;">
-                      {new Date(post.data.date).toLocaleDateString('en-US', {
-                        month: 'short',
-                        day: 'numeric',
-                        year: 'numeric'
-                      })}
-                    </span>
-                    <a href={`/posts/${post.slug}`}
-                       style={`font-size: 0.875rem; font-weight: 500; color: ${categoryInfo.color}; text-decoration: none; margin-left: auto;`}>
-                      Read More →
-                    </a>
-                  </div>
-                </div>
+              <article style="background: white; border-radius: 0.75rem; overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,0.07); border-top: 3px solid ${categoryInfo.color}; transition: box-shadow 0.2s; padding: 1.2rem 1rem; display: flex; flex-direction: column; gap: 0.5rem;">
+                <h3 style="font-size: 1.05rem; font-weight: 700; color: #1f2937; margin-bottom: 0.5rem; line-height: 1.4;">
+                  <a href={`/posts/${post.slug}`} style="text-decoration: none; color: inherit;">
+                    {post.data.title}
+                  </a>
+                </h3>
+                <p style="color: #6b7280; font-size: 0.93rem; line-height: 1.5; margin-bottom: 0.5rem;">
+                  {post.data.description}
+                </p>
+                <span style="font-size: 0.75rem; color: #9ca3af;">
+                  {new Date(post.data.date).toLocaleDateString('en-US', {
+                    month: 'short',
+                    day: 'numeric',
+                    year: 'numeric'
+                  })}
+                </span>
               </article>
             ))}
           </div>
         </section>
       );
     })}
-
-    <!-- Latest Posts -->
-    <div style="display: grid; grid-template-columns: 1fr 300px; gap: 2rem; align-items: start;">
-      <!-- Main Content -->
-      <div class="space-y-8">
-        <!-- Featured Article -->
-        {englishPosts[0] && (
-          <div class="bg-gradient-to-r from-purple-600 to-blue-600 rounded-2xl overflow-hidden shadow-2xl">
-            <div class="p-8 text-white">
-              <div class="flex items-center mb-4">
-                <span class="bg-white/20 px-3 py-1 rounded-full text-sm font-medium">🔥 Trending</span>
-                {englishPosts[0].data.category && (
-                  <span class="ml-3 bg-white/10 px-3 py-1 rounded-full text-sm">{englishPosts[0].data.category}</span>
-                )}
-              </div>
-              <h2 class="text-3xl font-bold mb-4 leading-tight">
-                <a href={`/posts/${englishPosts[0].slug.replace('en/', '')}/`} class="hover:text-purple-200 transition-colors">
-                  {englishPosts[0].data.title}
-                </a>
-              </h2>
-              <p class="text-purple-100 text-lg mb-6 leading-relaxed">{englishPosts[0].data.description}</p>
-              <div class="flex items-center justify-between">
-                <span class="text-purple-200 text-sm">{englishPosts[0].data.date}</span>
-                <a href={`/posts/${englishPosts[0].slug.replace('en/', '')}/`}
-                   class="bg-white text-purple-600 px-6 py-3 rounded-lg font-semibold hover:bg-purple-50 transition-colors flex items-center">
-                  Discover the Truth →
-                </a>
-              </div>
-            </div>
-          </div>
-        )}
-
-        <!-- Ad Space: In-Content Rectangle (300x250) -->
-        <div style="display: flex; justify-content: center; margin: 2rem 0;">
-          <div style="width: 300px; height: 250px; background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%); border: 2px dashed #f59e0b; border-radius: 0.5rem; display: flex; align-items: center; justify-content: center; color: #92400e; font-size: 0.875rem; text-align: center; font-weight: 500;">
-            💰 Premium Ad Space<br>(300x250)
-          </div>
-        </div>
-
-        <!-- Article Grid -->
-        <div class="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-          {englishPosts.slice(1).map(post => (
-            <article class="group bg-white rounded-xl shadow-md hover:shadow-2xl transition-all duration-300 border border-gray-100 overflow-hidden">
-              {post.data.category && (
-                <div class="h-2 bg-gradient-to-r from-purple-500 to-blue-500"></div>
-              )}
-              <div class="p-6">
-                <div class="flex items-center mb-3">
-                  {post.data.category && (
-                    <span class="bg-purple-100 text-purple-800 px-3 py-1 rounded-full text-xs font-medium uppercase tracking-wide">
-                      {post.data.category}
-                    </span>
-                  )}
-                  <span class="ml-auto text-xs text-gray-500">{post.data.date}</span>
-                </div>
-                <h2 class="text-xl font-bold text-gray-900 mb-3 leading-tight group-hover:text-purple-600 transition-colors">
-                  <a href={`/posts/${post.slug.replace('en/', '')}/`} class="block">
-                    {post.data.title}
-                  </a>
-                </h2>
-                <p class="text-gray-600 mb-4 leading-relaxed">{post.data.description}</p>
-                <div class="flex items-center justify-between">
-                  <div class="flex items-center space-x-2">
-                    <span class="text-sm text-gray-500">🧠 Mind-expanding</span>
-                  </div>
-                  <a href={`/posts/${post.slug.replace('en/', '')}/`}
-                     class="text-purple-600 font-medium hover:text-purple-700 transition-colors flex items-center">
-                    Read More →
-                  </a>
-                </div>
-              </div>
-            </article>
-          ))}
-        </div>
-      </div>
-
-      <!-- Sidebar -->
-      <div class="space-y-6">
-        <!-- Ad Space: Sidebar (300x600) -->
-        <div style="position: sticky; top: 2rem;">
-          <div style="width: 300px; height: 600px; background: linear-gradient(135deg, #ecfdf5 0%, #d1fae5 100%); border: 2px dashed #10b981; border-radius: 0.5rem; display: flex; align-items: center; justify-content: center; color: #065f46; font-size: 0.875rem; text-align: center; font-weight: 500;">
-            📈 Sidebar Ad<br>(300x600)<br><br>High-converting<br>placement
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- Enhanced Call to Action -->
-    <div class="relative mt-16 overflow-hidden">
-      <div class="bg-gradient-to-br from-purple-600 via-blue-600 to-indigo-700 rounded-2xl p-12 text-center text-white relative">
-        <div class="absolute inset-0 bg-black/10 rounded-2xl"></div>
-        <div class="relative z-10">
-          <h3 class="text-4xl font-bold mb-4">🚀 Ready to Blow Your Mind?</h3>
-          <p class="text-xl text-purple-100 mb-8 max-w-2xl mx-auto">
-            Join thousands of curious minds getting daily doses of shocking discoveries,
-            hidden truths, and mind-expanding insights.
-          </p>
-
-          <!-- Email Signup -->
-          <div class="max-w-md mx-auto mb-6">
-            <div class="flex rounded-lg overflow-hidden shadow-lg">
-              <input type="email" placeholder="Enter your email for mind-blowing content..."
-                     class="flex-1 px-6 py-4 text-gray-900 text-lg focus:outline-none">
-              <button class="bg-yellow-400 hover:bg-yellow-300 text-gray-900 px-8 py-4 font-bold text-lg transition-colors">
-                Get Shocked! 🧠
-              </button>
-            </div>
-          </div>
-
-          <!-- Social Proof -->
-          <div class="flex justify-center items-center space-x-6 text-purple-200">
-            <span class="flex items-center">
-              <svg class="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 20 20">
-                <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
-              </svg>
-              No spam, pure mind-blowing content
-            </span>
-            <span class="flex items-center">
-              <svg class="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 20 20">
-                <path d="M3 4a1 1 0 011-1h12a1 1 0 011 1v2a1 1 0 01-1 1H4a1 1 0 01-1-1V4zM3 10a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H4a1 1 0 01-1-1v-6zM14 9a1 1 0 00-1 1v6a1 1 0 001 1h2a1 1 0 001-1v-6a1 1 0 00-1-1h-2z"/>
-              </svg>
-              Unsubscribe anytime
-            </span>
-          </div>
-        </div>
-
-        <!-- Decorative elements -->
-        <div class="absolute top-4 right-4 w-16 h-16 bg-yellow-400/20 rounded-full animate-pulse"></div>
-        <div class="absolute bottom-4 left-4 w-12 h-12 bg-purple-400/20 rounded-full animate-bounce"></div>
-      </div>
-    </div>
   </main>
 </Layout>
