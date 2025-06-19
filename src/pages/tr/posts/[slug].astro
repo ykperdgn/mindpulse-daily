@@ -77,14 +77,29 @@ const { Content } = await post.render();
 
     <!-- Article Content -->
     <article class="prose prose-lg mx-auto">
-      <Content />
-    </article>
+      <Content />    </article>
+
+    <!-- Reklam Alanı 1 - AdSense veya tanıtım içeriği için kullanılabilir -->
+    <div class="mt-12 p-8 bg-gray-50 rounded-2xl border-2 border-dashed border-gray-200">
+      <div class="text-center text-gray-500">
+        <p class="text-sm">Reklam Alanı Mevcut</p>
+        <p class="text-xs mt-1">AdSense veya tanıtım içeriği için mükemmel</p>
+      </div>
+    </div>
 
     <!-- Article Footer -->
-    <footer class="mt-12 pt-8 border-t border-gray-200">      <div class="text-center">
-        <p class="text-gray-600 mb-4">Bu bilgi damlasını beğendiniz mi?</p>
+    <footer class="mt-12 pt-8 border-t border-gray-200">
+      <div class="text-center">
+        <!-- Reklam Alanı 2 - Footer alanı AdSense için -->
+        <div class="bg-gray-50 rounded-2xl p-8 mb-8 border-2 border-dashed border-gray-200">
+          <div class="text-center text-gray-500">
+            <p class="text-sm">Footer Reklam Alanı</p>
+            <p class="text-xs mt-1">Banner reklamlar veya tanıtım içeriği için ideal</p>
+          </div>
+        </div>
+
         <div class="flex justify-center space-x-4">
-          <a href="/tr" class="bg-gray-100 text-gray-900 px-4 py-2 rounded-lg font-medium hover:bg-gray-200 transition-colors">
+          <a href="/tr" class="bg-purple-600 text-white px-6 py-3 rounded-lg font-medium hover:bg-purple-700 transition-colors">
             Daha Fazla Makale Oku
           </a>
         </div>
