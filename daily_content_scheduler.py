@@ -18,37 +18,35 @@ from pathlib import Path
 class DailyContentScheduler:
     def __init__(self):
         self.content_dir = Path("src/content/posts")
-        self.turkey_tz = pytz.timezone('Europe/Istanbul')
-
-        # Daily content themes
+        self.turkey_tz = pytz.timezone('Europe/Istanbul')        # Daily content themes
         self.content_themes = {
             "monday": {
                 "en": {"category": "science", "theme": "Weekly Science Discoveries"},
-                "tr": {"category": "bilim", "theme": "Haftalık Bilim Keşifleri"}
+                "tr": {"category": "science", "theme": "Haftalık Bilim Keşifleri"}
             },
             "tuesday": {
-                "en": {"category": "technology", "theme": "Tech Tuesday Innovations"},
-                "tr": {"category": "teknoloji", "theme": "Salı Teknoloji Yenilikleri"}
+                "en": {"category": "science", "theme": "Tech Tuesday Innovations"},
+                "tr": {"category": "science", "theme": "Salı Teknoloji Yenilikleri"}
             },
             "wednesday": {
                 "en": {"category": "psychology", "theme": "Mind & Behavior Insights"},
-                "tr": {"category": "psikoloji", "theme": "Zihin ve Davranış İçgörüleri"}
+                "tr": {"category": "psychology", "theme": "Zihin ve Davranış İçgörüleri"}
             },
             "thursday": {
                 "en": {"category": "space", "theme": "Cosmic Discoveries"},
-                "tr": {"category": "uzay", "theme": "Kozmik Keşifler"}
+                "tr": {"category": "space", "theme": "Kozmik Keşifler"}
             },
             "friday": {
                 "en": {"category": "lifestyle", "theme": "Weekend Wellness"},
-                "tr": {"category": "yaşam", "theme": "Hafta Sonu Sağlığı"}
+                "tr": {"category": "lifestyle", "theme": "Hafta Sonu Sağlığı"}
             },
             "saturday": {
                 "en": {"category": "science", "theme": "Saturday Science Special"},
-                "tr": {"category": "bilim", "theme": "Cumartesi Bilim Özel"}
+                "tr": {"category": "science", "theme": "Cumartesi Bilim Özel"}
             },
             "sunday": {
                 "en": {"category": "psychology", "theme": "Sunday Reflection"},
-                "tr": {"category": "psikoloji", "theme": "Pazar Düşünceleri"}
+                "tr": {"category": "psychology", "theme": "Pazar Düşünceleri"}
             }
         }
 
@@ -107,20 +105,12 @@ class DailyContentScheduler:
 
         # Select random template and topic
         template_type = random.choice(list(self.daily_templates.keys()))
-        title_template = random.choice(self.daily_templates[template_type])
-
-        # Generate specific topic based on category
+        title_template = random.choice(self.daily_templates[template_type])        # Generate specific topic based on category
         topics_by_category = {
             "science": ["quantum computing", "genetic engineering", "climate science", "neuroscience"],
-            "bilim": ["kuantum bilgisayarlar", "gen mühendisliği", "iklim bilimi", "nörobilim"],
-            "technology": ["artificial intelligence", "blockchain", "virtual reality", "robotics"],
-            "teknoloji": ["yapay zeka", "blok zincir", "sanal gerçeklik", "robotik"],
             "psychology": ["cognitive behavior", "memory formation", "decision making", "social psychology"],
-            "psikoloji": ["bilişsel davranış", "hafıza oluşumu", "karar verme", "sosyal psikoloji"],
             "space": ["black holes", "exoplanets", "dark matter", "space exploration"],
-            "uzay": ["kara delikler", "öte gezegenler", "karanlık madde", "uzay keşfi"],
-            "lifestyle": ["nutrition science", "sleep optimization", "stress management", "mindfulness"],
-            "yaşam": ["beslenme bilimi", "uyku optimizasyonu", "stres yönetimi", "farkındalık"]
+            "lifestyle": ["nutrition science", "sleep optimization", "stress management", "mindfulness"]
         }
 
         topic = random.choice(topics_by_category.get(category, ["general science"]))
