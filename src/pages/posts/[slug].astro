@@ -6,13 +6,27 @@ import ContentRecommendations from '../../components/ContentRecommendations.astr
 export async function getStaticPaths() {
   try {
     const posts = await getCollection('posts');
+    console.log(`Total posts found: ${posts.length}`);
+
+    // Debug: Log all post IDs to identify any issues
+    posts.forEach(post => {
+      console.log(`Post ID: ${post.id}, Language: ${post.data.language}`);
+    });
 
     // Only get posts that are in the en/ directory AND have language 'en'
     const englishPosts = posts.filter(post => {
       const isInEnDir = post.id.startsWith('en/');
       const hasEnLang = post.data.language === 'en';
-      return isInEnDir && hasEnLang;
+      const shouldInclude = isInEnDir && hasEnLang;
+
+      if (!shouldInclude && post.id.includes('en/')) {
+        console.warn(`Excluding post: ${post.id} (inEnDir: ${isInEnDir}, hasEnLang: ${hasEnLang})`);
+      }
+
+      return shouldInclude;
     });
+
+    console.log(`Filtered to ${englishPosts.length} English posts`);
 
     const paths = englishPosts.map(post => {
       // Extract slug from post.id and remove .md extension if present
@@ -21,9 +35,11 @@ export async function getStaticPaths() {
 
       // Skip posts with empty or invalid slugs
       if (!slug || slug.trim() === '' || slug.includes('/')) {
-        console.warn(`Skipping post with invalid slug: ${post.id}`);
+        console.warn(`Skipping post with invalid slug: ${post.id} -> ${slug}`);
         return null;
       }
+
+      console.log(`Creating route: ${post.id} -> /posts/${slug}`);
 
       return {
         params: { slug },

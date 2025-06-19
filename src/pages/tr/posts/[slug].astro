@@ -5,13 +5,26 @@ import Layout from '../../../layouts/Layout.astro';
 export async function getStaticPaths() {
   try {
     const posts = await getCollection('posts');
+    console.log(`Total posts found for TR: ${posts.length}`);
+
+    // Debug: Log Turkish post processing
+    const turkishCandidates = posts.filter(post => post.id.startsWith('tr/'));
+    console.log(`Posts in tr/ directory: ${turkishCandidates.length}`);
 
     // Only get posts that are in the tr/ directory AND have language 'tr'
     const turkishPosts = posts.filter(post => {
       const isInTrDir = post.id.startsWith('tr/');
       const hasTrLang = post.data.language === 'tr';
-      return isInTrDir && hasTrLang;
+      const shouldInclude = isInTrDir && hasTrLang;
+
+      if (!shouldInclude && post.id.includes('tr/')) {
+        console.warn(`Excluding TR post: ${post.id} (inTrDir: ${isInTrDir}, hasTrLang: ${hasTrLang})`);
+      }
+
+      return shouldInclude;
     });
+
+    console.log(`Filtered to ${turkishPosts.length} Turkish posts`);
 
     const paths = turkishPosts.map(post => {
       // Extract slug from post.id and remove .md extension if present
@@ -20,9 +33,11 @@ export async function getStaticPaths() {
 
       // Skip posts with empty or invalid slugs
       if (!slug || slug.trim() === '' || slug.includes('/')) {
-        console.warn(`Skipping post with invalid slug: ${post.id}`);
+        console.warn(`Skipping TR post with invalid slug: ${post.id} -> ${slug}`);
         return null;
       }
+
+      console.log(`Creating TR route: ${post.id} -> /tr/posts/${slug}`);
 
       return {
         params: { slug },
